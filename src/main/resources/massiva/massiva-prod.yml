@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    driver-class-name: oracle.jdbc.OracleDriver
+    url: jdbc:oracle:thin:@(DESCRIPTION= (ADDRESS=(PROTOCOL=TCP)(HOST=10.221.63.81)(PORT=1521)) (CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=CICOP)))
+    username: CICOP
+    password: tim09cop
+  jpa:
+    hibernate:
+      ddl-auto: none
+      use-new-id-generator-mappings: false
+    database-platform: org.hibernate.dialect.Oracle10gDialect
