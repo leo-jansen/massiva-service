@@ -10,21 +10,21 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MassivaMetalicaDto {
-  private long id;
+  private Long id;
   private String idMassiva;
-  private int idAcao;
+  private Long idAcao;
   private String descAcao;
   private String dataAbertura;
   private String tipo;
-  private int status;
+  private Long status;
   private String msan;
   private String parInicio;
   private String parFim;
   private String uf;
   private String cidade;
-  private int idFalha;
+  private Long idFalha;
   private String descFalha;
-  private int idArea;
+  private Long idArea;
   private String descArea;
   private LocalDateTime prazo;
   private String expirado;
@@ -32,6 +32,6 @@ public class MassivaMetalicaDto {
   private String qtdClientes;
   private String dataInicioIndisponibilidade;
   private String dataFimIndisponibilidade;
-  private int indisponibilidade;
+  private Long indisponibilidade;
   private String observacao;
 }

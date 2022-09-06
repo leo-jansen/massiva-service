@@ -25,7 +25,7 @@ public class Massiva {
   @Column(name = "ID_MASSIVA")
   private String idMassiva;
   @Column(name = "ID_TP_ACAO")
-  private int idTpAcao;
+  private Long idTpAcao;
   @Column(name = "DT_ABERTURA")
   private LocalDateTime dataAbertura;
   @Column(name = "USU_ABERTURA")
@@ -37,7 +37,7 @@ public class Massiva {
   @Column(name = "TIPO")
   private String tipo;
   @Column(name = "STATUS")
-  private int status;
+  private Long status;
   @Column(name = "MSAN")
   private String msan;
   @Column(name = "PAR_INI")
@@ -49,9 +49,9 @@ public class Massiva {
   @Column(name = "CIDADE")
   private String cidade;
   @Column(name = "ID_TP_FALHA")
-  private int idTpFalha;
+  private Long idTpFalha;
   @Column(name = "ID_AREA")
-  private int idArea;
+  private Long idArea;
   @Column(name = "PRAZO")
   private LocalDateTime prazo;
   @Column(name = "DT_ACEITE")
@@ -59,15 +59,15 @@ public class Massiva {
   @Column(name = "USU_ACEITE")
   private String usuarioAceite;
   @Column(name = "ID_MOTIVO_REJEICAO")
-  private int idMotivoRejeicao;
+  private Long idMotivoRejeicao;
   @Column(name = "ID_MOTIVO_FECHAMENTO")
-  private int idMotivoFechamento;
+  private Long idMotivoFechamento;
   @Column(name = "EMPREITEIRA")
   private String empreiteira;
   @Column(name = "OBSERVACAO")
   private String observacao;
   @Column(name = "ID_TP_MANUTENCAO")
-  private int idTpManutencao;
+  private Long idTpManutencao;
   @Column(name = "DT_MANUTENCAO_PROGRAMADA")
   private LocalDateTime dataManutencaoProg;
   @Column(name = "USU_ATUALIZADO")
@@ -77,7 +77,7 @@ public class Massiva {
   @Column(name = "FILE_ID")
   private String fileId;
   @Column(name = "QTD_CLIENTES")
-  private int quantClientes;
+  private Long quantClientes;
   @Column(name = "DT_INI_INDISPONIBILIDADE")
   private LocalDateTime dataIniIndisp;
   @Column(name = "DT_FIM_INDISPONIBILIDADE")

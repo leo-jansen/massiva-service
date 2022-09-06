@@ -19,7 +19,7 @@ public class MassivaMetalServiceId {
   @Id
   @SequenceGenerator(name = "TB_METAL_MASS_SERVICEID_ID_GENERATOR", sequenceName = "SQ_APP_METAL_MASS_SERVICEID", allocationSize = 1)
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TB_METAL_MASS_SERVICEID_ID_GENERATOR")
-  private long id;
+  private Long id;
   @Column(name = "FK_METAL_MASSIVA", nullable = false)
   private long fkMetalMassiva;
   @Column(name = "SERVICEID", nullable = false)

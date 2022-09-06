@@ -8,10 +8,7 @@ public class MassivaSql {
         (
           CASE
             WHEN A.idTpAcao = 1 THEN TO_CHAR(A.dataAbertura, 'dd/mm/yyyy hh24:mi:ss')
-            ELSE TO_CHAR (
-              A.dataManutencaoProg,
-              'dd/mm/yyyy hh24:mi:ss'
-            )
+            ELSE TO_CHAR (A.dataManutencaoProg, 'dd/mm/yyyy hh24:mi:ss')
           END
         ),
         A.tipo, A.status, A.msan, A.parInicio, A.parFim, A.uf, A.cidade, A.idTpFalha,
@@ -43,15 +40,9 @@ public class MassivaSql {
           END
         ),
         A.empreiteira,
-        NVL2(TO_CHAR(A.quantClientes), '?'),
-        TO_CHAR (
-          A.dataIniIndisp,
-          'dd/mm/yyyy hh24:mi:ss'
-        ),
-        TO_CHAR (
-          dataFimIndisp,
-          'dd/mm/yyyy hh24:mi:ss'
-        ),
+        NVL(TO_CHAR(A.quantClientes), '?'),
+        TO_CHAR(A.dataIniIndisp, 'dd/mm/yyyy hh24:mi:ss'),
+        TO_CHAR(A.dataFimIndisp, 'dd/mm/yyyy hh24:mi:ss'),
         NVL(C.flagIndisponibilidade, 1),
         A.observacao
       )

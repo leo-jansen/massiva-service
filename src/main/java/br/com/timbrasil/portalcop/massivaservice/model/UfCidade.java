@@ -19,7 +19,7 @@ public class UfCidade {
   @Id
   @SequenceGenerator(name = "ufCidade", sequenceName = "sq_uf", allocationSize = 1)
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ufCidade")
-  private int id;
+  private Long id;
   @Column(name = "UF")
   private String uf;
   @Column(name = "CIDADE")

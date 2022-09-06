@@ -1,6 +1,7 @@
 package br.com.timbrasil.portalcop.massivaservice.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,9 +20,9 @@ public class MassivaMetalicaController {
 
   @GetMapping
   public ResponseEntity<List<MassivaMetalicaDto>> getMassivasMetalica() {
-    List<MassivaMetalicaDto> massivasMetalica = massivaMetalicaService.getMassivasMetalica();
-    if (massivasMetalica.size() > 0) {
-      return ResponseEntity.ok(massivasMetalica);
+    Optional<List<MassivaMetalicaDto>> massivasMetalica = massivaMetalicaService.getMassivasMetalica();
+    if (massivasMetalica.isPresent()) {
+      return ResponseEntity.ok(massivasMetalica.get());
     } 
     return ResponseEntity.noContent().build();
   }

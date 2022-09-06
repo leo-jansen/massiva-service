@@ -20,7 +20,7 @@ public class Area {
   @Column(name = "ID_AREA")
   @SequenceGenerator(name = "area", sequenceName = "SQ_AREA", allocationSize = 1)
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "area")
-	private int id;
+	private Long id;
 	@Column(name = "DESC_AREA")
 	private String descArea;
 }

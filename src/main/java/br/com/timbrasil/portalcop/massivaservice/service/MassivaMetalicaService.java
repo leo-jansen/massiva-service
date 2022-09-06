@@ -16,8 +16,8 @@ public class MassivaMetalicaService {
   @Autowired
   MassivaRepository massivaRepository;
 
-  public List<MassivaMetalicaDto> getMassivasMetalica() {
-    List<MassivaMetalicaDto> massivasMetalica = massivaRepository.getMassivasMetalica();
+  public Optional<List<MassivaMetalicaDto>> getMassivasMetalica() {
+    Optional<List<MassivaMetalicaDto>> massivasMetalica = massivaRepository.getMassivasMetalica();
     return massivasMetalica;
   }
 

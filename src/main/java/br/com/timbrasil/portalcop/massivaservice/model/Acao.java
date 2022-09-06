@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 public class Acao {
   @Id
 	@Column(name = "ID_TP_ACAO")
-	private int id;
+	private Long id;
 	@Column(name = "DESC_TP_ACAO")
 	private String descAcao;
 }
