@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.timbrasil.portalcop.massivaservice.dto.MassivaMetalicaDto;
+import br.com.timbrasil.portalcop.massivaservice.model.OttMassivaMetalica;
 import br.com.timbrasil.portalcop.massivaservice.service.MassivaMetalicaService;
 
 @RestController
@@ -25,5 +26,11 @@ public class MassivaMetalicaController {
       return ResponseEntity.ok(massivasMetalica.get());
     } 
     return ResponseEntity.noContent().build();
+  }
+
+  @GetMapping("otts")
+  public ResponseEntity<List<OttMassivaMetalica>> getOttsMassivasMetalica() {
+    List<OttMassivaMetalica> otts = massivaMetalicaService.getOttsMassivasMetalica();
+    return ResponseEntity.ok(otts);
   }
 }
