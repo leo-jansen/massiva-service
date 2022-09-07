@@ -20,5 +20,10 @@ public class UfCidadeService {
     return ufs;
   }
 
+  public List<String> getComboCidade(String cidade) {
+    log.trace("buscando cidade para uf " + cidade);
+    List<String> comboCidade = ufCidadeRepository.getComboCidade(cidade);
+    return comboCidade;
+  }
 
 }
