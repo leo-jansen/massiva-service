@@ -3,8 +3,6 @@ package br.com.timbrasil.portalcop.massivaservice.repositories;
 import java.util.List;
 import java.util.Optional;
 
-import javax.validation.constraints.NotNull;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -17,7 +15,7 @@ public interface MassivaRepository extends JpaRepository<Massiva, Long>{
   Optional<List<MassivaMetalicaDto>> getMassivasMetalica();
 
   @Query(value = MassivaSql.SQL_VERF_MASS_METAL_ABERTA)
-  Optional<Massiva> findByIdTpAcaoAndMsanAndParInicioAndParFim(Long idAcao, String msan, @NotNull String parIni, @NotNull String parFim);
+  Optional<Massiva> findByIdTpAcaoAndMsanAndParInicioAndParFim(Long idAcao, String msan, String parIni, String parFim);
 
   @Query(value = MassivaSql.SEARCH_OPEN_RMT)
   Optional<Massiva> findByMsanAndParInicioAndParFim(String msan, String parIni, String parFim);
