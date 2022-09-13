@@ -2,6 +2,7 @@ package br.com.timbrasil.portalcop.massivaservice.dto;
 
 import java.time.LocalDateTime;
 
+import br.com.timbrasil.portalcop.massivaservice.form.MassivaForm;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -34,4 +35,9 @@ public class MassivaMetalicaDto {
   private String dataFimIndisponibilidade;
   private Long indisponibilidade;
   private String observacao;
+
+  public static MassivaMetalicaDto conveter(MassivaForm massivaForm) {
+    MassivaMetalicaDto massivaMetalicaDto = new MassivaMetalicaDto();
+    return massivaMetalicaDto;
+  }
 }

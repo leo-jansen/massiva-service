@@ -82,4 +82,30 @@ public class Massiva {
   private LocalDateTime dataIniIndisp;
   @Column(name = "DT_FIM_INDISPONIBILIDADE")
   private LocalDateTime dataFimIndisp;
+
+  public Massiva(Long idTpAcao, String usuarioAbertura, String tipo, String msan, String parInicio, String parFim,
+      String uf, String cidade, Long idTpFalha, Long idArea, LocalDateTime prazo, String empreiteira, String observacao,
+      Long idTpManutencao, LocalDateTime dataManutencaoProg, String fileId, LocalDateTime dataIniIndisp,
+      LocalDateTime dataFimIndisp) {
+    this.idTpAcao = idTpAcao;
+    this.dataAbertura = LocalDateTime.now();
+    this.usuarioAbertura = usuarioAbertura;
+    this.tipo = tipo;
+    this.msan = msan;
+    this.parInicio = parInicio;
+    this.parFim = parFim;
+    this.uf = uf;
+    this.cidade = cidade;
+    this.idTpFalha = idTpFalha;
+    this.idArea = idArea;
+    this.prazo = prazo;
+    this.empreiteira = empreiteira;
+    this.observacao = observacao;
+    this.idTpManutencao = idTpManutencao;
+    this.dataManutencaoProg = dataManutencaoProg;
+    this.fileId = fileId;
+    this.dataIniIndisp = dataIniIndisp;
+    this.dataFimIndisp = dataFimIndisp;
+    this.quantClientes = 0L;
+  }
 }

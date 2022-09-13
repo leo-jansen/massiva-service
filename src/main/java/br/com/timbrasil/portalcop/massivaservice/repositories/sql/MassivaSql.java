@@ -57,4 +57,34 @@ public class MassivaSql {
     ORDER BY
       A.dataAbertura  
   """;
+
+  public static final String SQL_VERF_MASS_METAL_ABERTA = """
+    SELECT
+      m
+    FROM
+      Massiva m
+    WHERE
+      m.idTpAcao = :idAcao
+      AND m.msan = :masn
+      AND (
+        TO_NUMBER(REPLACE(:parIni, 'MDF-')) BETWEEN TO_NUMBER(REPLACE(m.parInicio, 'MDF-'))
+        AND TO_NUMBER(REPLACE(m.parFim, 'MDF-'))
+        OR TO_NUMBER(REPLACE(:parFim, 'MDF-')) BETWEEN TO_NUMBER(REPLACE(m.parInicio, 'MDF-'))
+        AND TO_NUMBER(REPLACE(m.parFim, 'MDF-'))
+      )
+      AND STATUS = 0    
+  """; 
+
+  public static final String SEARCH_OPEN_RMT = """
+    SELECT
+      m
+    FROM
+      Massiva m
+    WHERE
+      m.idTpAcao LIKE 'RMT%'
+      AND m.msan = :masn
+      AND m.parInicio <= :parIni
+      AND m.parFim >= :parFim
+      AND STATUS = 0    
+  """;  
 }

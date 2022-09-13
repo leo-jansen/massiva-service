@@ -23,17 +23,20 @@ public class MassivaForm {
   @NotBlank @NotEmpty @NotNull
   private String msan;
   @NotBlank @NotEmpty @NotNull
-  private Long parInicio;
+  private String tipo;
   @NotBlank @NotEmpty @NotNull
-  private Long parFim;
+  private String parInicio;
   @NotBlank @NotEmpty @NotNull
-  private String tipoFalha;
-  @NotBlank @NotEmpty @NotNull
-  private String origem;
-  @NotBlank @NotEmpty @NotNull
-  private String empreiteira;
-  @NotBlank @NotEmpty @NotNull
-  private LocalDateTime prazo;
+  private String parFim;
   @NotBlank @NotEmpty @NotNull
   private String observacao;
+  private Long idTpArea;
+  private Long idTpFalha;
+  private LocalDateTime prazo;
+  private String empreiteira;
+  private Long idTpManutencao;
+  private LocalDateTime dataIniIndisp;
+  private LocalDateTime dataFimIndisp;
+  private LocalDateTime dtIniManutencao;
+  private String fileId;
 }
