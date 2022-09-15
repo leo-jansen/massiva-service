@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.timbrasil.portalcop.massivaservice.dto.MassivaMetalicaDto;
@@ -46,7 +47,17 @@ public class MassivaMetalicaController {
       massivaMetalicaService.newMassiva(massivaForm, null);
       return ResponseEntity.ok(MassivaMetalicaDto.conveter(massivaForm));
     } catch (Exception e) {
-       return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
+      return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
+    }
+  }
+
+  @GetMapping("/close")
+  public ResponseEntity<?> closeMassiva(@RequestParam("idMassiva") String idMassiva, @RequestParam("idMotivo") Long idMotivo) {
+    try {
+      massivaMetalicaService.closeMassivaMetalica("", idMotivo, idMassiva);
+      return ResponseEntity.status(204).build();
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
     }
   }
 }

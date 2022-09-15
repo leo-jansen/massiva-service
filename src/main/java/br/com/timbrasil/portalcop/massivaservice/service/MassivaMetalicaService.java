@@ -21,6 +21,7 @@ import br.com.timbrasil.portalcop.massivaservice.repositories.MassivaMetalServic
 import br.com.timbrasil.portalcop.massivaservice.repositories.MassivaMetalicaMsgRepository;
 import br.com.timbrasil.portalcop.massivaservice.repositories.MassivaRepository;
 import br.com.timbrasil.portalcop.massivaservice.repositories.OttMassivaMetalicaRepository;
+import br.com.timbrasil.portalcop.massivaservice.repositories.sql.AppLogSql;
 import br.com.timbrasil.portalcop.massivaservice.repositories.sql.MassivaMetalicaMsgSql;
 import lombok.extern.slf4j.Slf4j;
 
@@ -120,12 +121,16 @@ public class MassivaMetalicaService {
 
   @Transactional
   public void regMsgMetalMassiva(String idMassiva, String matricula, String acao) {
-    MassivaMetalicaMsg massivaMetalicaMsg = new MassivaMetalicaMsg();
-    massivaMetalicaMsg.setIdMassiva(idMassiva);
-    massivaMetalicaMsg.setDataAcao(LocalDateTime.now());
-    massivaMetalicaMsg.setUsuario(matricula);
-    massivaMetalicaMsg.setAcaoExec(acao);
-    massivaMetalicaMsgRepository.save(massivaMetalicaMsg);
+    try {
+      MassivaMetalicaMsg massivaMetalicaMsg = new MassivaMetalicaMsg();
+      massivaMetalicaMsg.setIdMassiva(idMassiva);
+      massivaMetalicaMsg.setDataAcao(LocalDateTime.now());
+      massivaMetalicaMsg.setUsuario(matricula);
+      massivaMetalicaMsg.setAcaoExec(acao);
+      massivaMetalicaMsgRepository.save(massivaMetalicaMsg);
+    } catch (Exception e) {
+      log.error("regMsgMetalMassiva(" + idMassiva + ", " + matricula + ", " + acao + ") - " + e.getLocalizedMessage());
+    }
   }
 
   @Transactional
@@ -174,5 +179,47 @@ public class MassivaMetalicaService {
       qtdClientes = 0;
     }
     return qtdClientes;
+  }
+
+  @Transactional
+  public void closeMassivaMetalica(String user, Long idMotivo, String idMassiva) {
+    Optional<Massiva> massiva = massivaRepository.findByIdMassiva(idMassiva);
+    if (massiva.isPresent()) {
+      massiva.get().setDataFim(LocalDateTime.now());
+      massiva.get().setStatus(1L);
+      massiva.get().setIdMotivoFechamento(idMotivo);
+      massiva.get().setUsuarioFim(user);
+
+      regMsgMetalMassiva(idMassiva, user, "Fechar");
+
+      // TODO: terminar essa parte
+      // chamaServico(idMassiva, "close", null);
+      // enviarEmailMassivaMetalica(idMassiva, "fechada", user);
+
+      gravarLogTelaUnica(user, user.substring(1), "GESTÃO - Massiva Metálica", "FECHAR MASSIVA METALICA", null, "OK", null, idMassiva, "MASSIVA METALICA FECHADA COM SUCESSO");
+    }
+  }
+
+  @Transactional
+  public void gravarLogTelaUnica(String matricula, String idLg, String perfil, String acao, String id, String status,
+      String serviceId, String ntt, String resultado) {
+    try {
+      log.info("Insert do LOG do Tela Única");
+      String sql = AppLogSql.SQL_INS_COP_APP_LOG;
+      entityManager.createNativeQuery(sql)
+          .setParameter("acao", acao)
+          .setParameter("matricula", matricula)
+          .setParameter("perfil", perfil)
+          .setParameter("idLg", idLg)
+          .setParameter("ordem", id)
+          .setParameter("status", status)
+          .setParameter("serviceId", serviceId)
+          .setParameter("ntt", ntt)
+          .setParameter("resultado", resultado)
+          .executeUpdate();
+    } catch (Exception e) {
+      log.error("CicopDao.setLog(" + matricula + ", " + idLg + ", " + perfil + ", " + acao + ", " + id + ", "
+					+ status + ", " + serviceId + ", " + ntt + ", " + resultado + ") - " + e.getLocalizedMessage());
+    }
   }
 }
