@@ -8,7 +8,9 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.timbrasil.portalcop.massivaservice.dto.MassivaMetalicaDto;
+import br.com.timbrasil.portalcop.massivaservice.dto.Relatorio;
 import br.com.timbrasil.portalcop.massivaservice.form.MassivaForm;
 import br.com.timbrasil.portalcop.massivaservice.model.OttMassivaMetalica;
 import br.com.timbrasil.portalcop.massivaservice.service.MassivaMetalicaService;
@@ -51,7 +54,7 @@ public class MassivaMetalicaController {
     }
   }
 
-  @GetMapping("/close")
+  @DeleteMapping("/close")
   public ResponseEntity<?> closeMassiva(@RequestParam("idMassiva") String idMassiva, @RequestParam("idMotivo") Long idMotivo) {
     try {
       massivaMetalicaService.closeMassivaMetalica("", idMotivo, idMassiva);
@@ -59,5 +62,11 @@ public class MassivaMetalicaController {
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
     }
+  }
+
+  @GetMapping("/relatorio/{id}")
+  public List<Relatorio> getRelatorioMassiva(@PathVariable("id") Long id) {
+    List<Relatorio> relatorio = massivaMetalicaService.getRelatorio(id);
+    return relatorio;
   }
 }

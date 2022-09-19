@@ -12,14 +12,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.timbrasil.portalcop.massivaservice.dto.MassivaMetalicaDto;
+import br.com.timbrasil.portalcop.massivaservice.dto.Relatorio;
 import br.com.timbrasil.portalcop.massivaservice.form.MassivaForm;
-import br.com.timbrasil.portalcop.massivaservice.model.Massiva;
+import br.com.timbrasil.portalcop.massivaservice.model.MassivaMetal;
 import br.com.timbrasil.portalcop.massivaservice.model.MassivaMetalServiceId;
 import br.com.timbrasil.portalcop.massivaservice.model.MassivaMetalicaMsg;
 import br.com.timbrasil.portalcop.massivaservice.model.OttMassivaMetalica;
 import br.com.timbrasil.portalcop.massivaservice.repositories.MassivaMetalServiceIdRepository;
 import br.com.timbrasil.portalcop.massivaservice.repositories.MassivaMetalicaMsgRepository;
-import br.com.timbrasil.portalcop.massivaservice.repositories.MassivaRepository;
+import br.com.timbrasil.portalcop.massivaservice.repositories.MassivaMetalRepository;
 import br.com.timbrasil.portalcop.massivaservice.repositories.OttMassivaMetalicaRepository;
 import br.com.timbrasil.portalcop.massivaservice.repositories.sql.AppLogSql;
 import br.com.timbrasil.portalcop.massivaservice.repositories.sql.MassivaMetalicaMsgSql;
@@ -29,7 +30,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class MassivaMetalicaService {
   @Autowired
-  MassivaRepository massivaRepository;
+  MassivaMetalRepository massivaMetalRepository;
 
   @Autowired
   OttMassivaMetalicaRepository ottMassivaMetalicaRepository;
@@ -45,7 +46,7 @@ public class MassivaMetalicaService {
 
   public Optional<List<MassivaMetalicaDto>> getMassivasMetalica() {
     log.trace("Buscando massivas metalicas");
-    Optional<List<MassivaMetalicaDto>> massivasMetalica = massivaRepository.getMassivasMetalica();
+    Optional<List<MassivaMetalicaDto>> massivasMetalica = massivaMetalRepository.getMassivasMetalica();
     return massivasMetalica;
   }
 
@@ -80,21 +81,21 @@ public class MassivaMetalicaService {
       log.debug("Massiva Já cadastrada");
       throw new Exception("Essa massiva já foi aberta: ");
     }
-    Optional<Massiva> optionalMassiva = massivaRepository.findByMsanAndParInicioAndParFim(massivaForm.getMsan(),
+    Optional<MassivaMetal> optionalMassiva = massivaMetalRepository.findByMsanAndParInicioAndParFim(massivaForm.getMsan(),
         massivaForm.getParInicio(), massivaForm.getParFim());
     if (optionalMassiva.isPresent()) {
       throw new Exception("A %s já contempla a MSAN: %s, inicio %f e fim %f ".formatted(
           optionalMassiva.get().getIdMassiva(), optionalMassiva.get().getMsan(),
           optionalMassiva.get().getParInicio(), optionalMassiva.get().getParFim()));
     }
-    Massiva massiva = new Massiva(idTpAcao, matricula, massivaForm.getTipo(), massivaForm.getMsan(),
+    MassivaMetal massiva = new MassivaMetal(idTpAcao, matricula, massivaForm.getTipo(), massivaForm.getMsan(),
         massivaForm.getParInicio(),
         massivaForm.getParFim(), massivaForm.getUf(), massivaForm.getCidade(), massivaForm.getIdTpFalha(),
         massivaForm.getIdTpArea(), massivaForm.getPrazo(), massivaForm.getEmpreiteira(), massivaForm.getObservacao(),
         massivaForm.getIdTpManutencao(), massivaForm.getDtIniManutencao(), massivaForm.getFileId(),
         massivaForm.getDataIniIndisp(), massivaForm.getDataFimIndisp());
 
-    Massiva save = massivaRepository.save(massiva);
+    MassivaMetal save = massivaMetalRepository.save(massiva);
     if (idTpAcao.equals(1L)) {
       save.setIdMassiva("RMT_" + save.getId());
     } else if (idTpAcao.equals(2L)) {
@@ -110,7 +111,7 @@ public class MassivaMetalicaService {
   }
 
   public boolean checkMassiva(Long idTpAcao, String msan, @NotNull String parInicio, @NotNull String parFim) {
-    Optional<Massiva> optionalMassiva = massivaRepository.findByIdTpAcaoAndMsanAndParInicioAndParFim(idTpAcao, msan,
+    Optional<MassivaMetal> optionalMassiva = massivaMetalRepository.findByIdTpAcaoAndMsanAndParInicioAndParFim(idTpAcao, msan,
         parInicio, parFim);
     if (optionalMassiva.isPresent()) {
       return true;
@@ -137,7 +138,7 @@ public class MassivaMetalicaService {
   public void atualizarMassivaMetalica(String idMassiva, String empreiteira, String observacao, String matricula,
       String parInicio, String parFim, String msan, Long idTpAcao, boolean reg) {
     int qtdClientes = atualizarClientesImpactados(msan, parInicio, parFim, idTpAcao, idMassiva);
-    Optional<Massiva> massiva = massivaRepository.findByIdMassiva(idMassiva);
+    Optional<MassivaMetal> massiva = massivaMetalRepository.findByIdMassiva(idMassiva);
     if (massiva.isPresent()) {
       massiva.get().setDataAtualizado(LocalDateTime.now());
       massiva.get().setQuantClientes(Long.valueOf(qtdClientes));
@@ -183,7 +184,7 @@ public class MassivaMetalicaService {
 
   @Transactional
   public void closeMassivaMetalica(String user, Long idMotivo, String idMassiva) {
-    Optional<Massiva> massiva = massivaRepository.findByIdMassiva(idMassiva);
+    Optional<MassivaMetal> massiva = massivaMetalRepository.findByIdMassiva(idMassiva);
     if (massiva.isPresent()) {
       massiva.get().setDataFim(LocalDateTime.now());
       massiva.get().setStatus(1L);
@@ -221,5 +222,14 @@ public class MassivaMetalicaService {
       log.error("CicopDao.setLog(" + matricula + ", " + idLg + ", " + perfil + ", " + acao + ", " + id + ", "
 					+ status + ", " + serviceId + ", " + ntt + ", " + resultado + ") - " + e.getLocalizedMessage());
     }
+  }
+
+  public List<Relatorio> getRelatorio(Long id) {
+    log.info("Buscando relatorio para a massiva de id: " + id);
+    List<Relatorio> relatorio = massivaMetalRepository.getRelatorio(id);
+    if(relatorio.isEmpty()) {
+      return List.of();
+    }
+    return relatorio;
   }
 }
