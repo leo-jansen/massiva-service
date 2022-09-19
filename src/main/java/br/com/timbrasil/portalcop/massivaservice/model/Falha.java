@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 public class Falha {
   @Id
 	@Column(name = "ID_TP_FALHA")
-	private int id;
+	private Long id;
 	@Column(name = "DESC_TP_FALHA")
 	private String descFalha;
 }

@@ -19,9 +19,9 @@ public class Empreiteira {
   @Id
   @SequenceGenerator(name = "empreiteira", sequenceName = "SQ_EMPREITEIRA", allocationSize = 1)
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "empreiteira")
-  private int id;
+  private Long id;
   @Column(name = "NOME_EMPREITEIRA")
   private String nomeEmpreiteira;
   @Column(name = "EMPREITEIRA_ATIVA")
-  private int empreiteiraAtiva;
+  private Long empreiteiraAtiva;
 }

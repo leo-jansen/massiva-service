@@ -4,10 +4,7 @@ import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import lombok.Data;
@@ -16,70 +13,61 @@ import lombok.NoArgsConstructor;
 @Data
 @Entity
 @NoArgsConstructor
-@Table(name = "COP_APP_METAL_MASSIVA", schema = "CICOP")
+@Table(name = "TB_MASSIVA", schema = "CICOP")
 public class Massiva {
   @Id
-  @SequenceGenerator(name = "TB_METAL_MASSIVA_ID_GENERATOR", sequenceName = "COP_SEQ_METAL_MASSIVA", allocationSize = 1)
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TB_METAL_MASSIVA_ID_GENERATOR")
+  @Column(name = "ID")
   private Long id;
-  @Column(name = "ID_MASSIVA")
-  private String idMassiva;
-  @Column(name = "ID_TP_ACAO")
-  private int idTpAcao;
-  @Column(name = "DT_ABERTURA")
-  private LocalDateTime dataAbertura;
-  @Column(name = "USU_ABERTURA")
-  private String usuarioAbertura;
-  @Column(name = "DT_FIM")
-  private LocalDateTime dataFim;
-  @Column(name = "USU_FIM")
-  private String usuarioFim;
-  @Column(name = "TIPO")
-  private String tipo;
-  @Column(name = "STATUS")
-  private int status;
-  @Column(name = "MSAN")
-  private String msan;
-  @Column(name = "PAR_INI")
-  private String parInicio;
-  @Column(name = "PAR_FIM")
-  private String parFim;
-  @Column(name = "UF")
-  private String uf;
-  @Column(name = "CIDADE")
-  private String cidade;
-  @Column(name = "ID_TP_FALHA")
-  private int idTpFalha;
-  @Column(name = "ID_AREA")
-  private int idArea;
-  @Column(name = "PRAZO")
-  private LocalDateTime prazo;
-  @Column(name = "DT_ACEITE")
-  private LocalDateTime dataAceite;
-  @Column(name = "USU_ACEITE")
-  private String usuarioAceite;
-  @Column(name = "ID_MOTIVO_REJEICAO")
-  private int idMotivoRejeicao;
-  @Column(name = "ID_MOTIVO_FECHAMENTO")
-  private int idMotivoFechamento;
-  @Column(name = "EMPREITEIRA")
-  private String empreiteira;
+  @Column(name = "FK_ATIVIDADE")
+  private Long fkAtividade;
+  @Column(name = "FK_SUB_TIPO_ABERTURA")
+  private Long fkSubTipoAbertura;
+  @Column(name = "FK_TIPO_TOPOLOGIA")
+  private Long fkTipoTopologia;
+  @Column(name = "FK_CIDADE")
+  private Long fkCidade;
+  @Column(name = "FK_EQUIPE_RESP_ABERTURA")
+  private Long fkEquipeRespAbertura;
+  @Column(name = "FK_EQUIPE_RESP_FECHAMENTO")
+  private Long fkEquipeRespFechamento;
+  @Column(name = "NTT")
+  private String ntt;
+  @Column(name = "CONTROLE")
+  private Long controle;
+  @Column(name = "LOCALIDADE")
+  private String localidade;
+  @Column(name = "DETALHE_TECNICO")
+  private String detalheTecnico;
+  @Column(name = "CAUSA")
+  private String causa;
+  @Column(name = "CAUSA_RAIZ")
+  private String causaRaiz;
+  @Column(name = "DT_ACIONAMENTO")
+  private LocalDateTime dtAcionamento;
+  @Column(name = "DT_PREVISAO")
+  private LocalDateTime dtPrevisao;
+  @Column(name = "DT_FALHA")
+  private LocalDateTime dtFalha;
+  @Column(name = "FK_PRIORIDADE")
+  private Long fkPrioridade;
   @Column(name = "OBSERVACAO")
   private String observacao;
-  @Column(name = "ID_TP_MANUTENCAO")
-  private int idTpManutencao;
-  @Column(name = "DT_MANUTENCAO_PROGRAMADA")
-  private LocalDateTime dataManutencaoProg;
-  @Column(name = "USU_ATUALIZADO")
-  private String usuarioAtualizado;
-  @Column(name = "DT_ATUALIZADO")
-  private LocalDateTime dataAtualizado;
-  @Column(name = "FILE_ID")
-  private String fileId;
-  @Column(name = "QTD_CLIENTES")
-  private int quantClientes;
-  @Column(name = "DT_INI_INDISPONIBILIDADE")
-  private LocalDateTime dataIniIndisp;
-  @Column(name = "DT_FIM_INDISPONIBILIDADE")
-  private LocalDateTime dataFimIndisp;
+  @Column(name = "NOTA_FECHAMENTO")
+  private String notaFechamento;
+  @Column(name = "DT_NORMALIZACAO")
+  private LocalDateTime dtNormalizacao;
+  @Column(name = "MOTIVO_REJEICAO")
+  private String motivoRejeicao;
+  @Column(name = "QTD_IMPACTADO")
+  private Long qtdImpactado;
+  @Column(name = "QTD_BASE")
+  private Long qtdBase;
+  @Column(name = "AREA_ABERTURA")
+  private String areaAbertura;
+  @Column(name = "QTD_ELEMENTOS")
+  private Long qtdElementos;
+  @Column(name = "QTD_INDISPONIVEIS")
+  private Long qtdIndisponiveis;
+  @Column(name = "FLAG_NTT_CANCELADO")
+  private Long flagNttCancelado;
 }

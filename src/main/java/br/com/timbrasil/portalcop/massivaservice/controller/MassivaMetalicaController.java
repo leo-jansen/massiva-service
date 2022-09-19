@@ -1,14 +1,26 @@
 package br.com.timbrasil.portalcop.massivaservice.controller;
 
 import java.util.List;
+import java.util.Optional;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.timbrasil.portalcop.massivaservice.dto.MassivaMetalicaDto;
+import br.com.timbrasil.portalcop.massivaservice.dto.Relatorio;
+import br.com.timbrasil.portalcop.massivaservice.form.MassivaForm;
+import br.com.timbrasil.portalcop.massivaservice.model.OttMassivaMetalica;
 import br.com.timbrasil.portalcop.massivaservice.service.MassivaMetalicaService;
 
 @RestController
@@ -19,10 +31,42 @@ public class MassivaMetalicaController {
 
   @GetMapping
   public ResponseEntity<List<MassivaMetalicaDto>> getMassivasMetalica() {
-    List<MassivaMetalicaDto> massivasMetalica = massivaMetalicaService.getMassivasMetalica();
-    if (massivasMetalica.size() > 0) {
-      return ResponseEntity.ok(massivasMetalica);
-    } 
+    Optional<List<MassivaMetalicaDto>> massivasMetalica = massivaMetalicaService.getMassivasMetalica();
+    if (massivasMetalica.isPresent()) {
+      return ResponseEntity.ok(massivasMetalica.get());
+    }
     return ResponseEntity.noContent().build();
+  }
+
+  @GetMapping("otts")
+  public ResponseEntity<List<OttMassivaMetalica>> getOttsMassivasMetalica() {
+    List<OttMassivaMetalica> otts = massivaMetalicaService.getOttsMassivasMetalica();
+    return ResponseEntity.ok(otts);
+  }
+
+  @PostMapping("/novo")
+  public ResponseEntity<MassivaMetalicaDto> newMassiva(@RequestBody @Valid MassivaForm massivaForm) {
+    try {
+      massivaMetalicaService.newMassiva(massivaForm, null);
+      return ResponseEntity.ok(MassivaMetalicaDto.conveter(massivaForm));
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
+    }
+  }
+
+  @DeleteMapping("/close")
+  public ResponseEntity<?> closeMassiva(@RequestParam("idMassiva") String idMassiva, @RequestParam("idMotivo") Long idMotivo) {
+    try {
+      massivaMetalicaService.closeMassivaMetalica("", idMotivo, idMassiva);
+      return ResponseEntity.status(204).build();
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
+    }
+  }
+
+  @GetMapping("/relatorio/{id}")
+  public List<Relatorio> getRelatorioMassiva(@PathVariable("id") Long id) {
+    List<Relatorio> relatorio = massivaMetalicaService.getRelatorio(id);
+    return relatorio;
   }
 }

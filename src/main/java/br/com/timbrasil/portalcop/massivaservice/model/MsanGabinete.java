@@ -11,11 +11,13 @@ import lombok.NoArgsConstructor;
 @Data
 @Entity
 @NoArgsConstructor
-@Table(name = "COP_APP_METAL_TP_ACAO", schema = "CICOP")
-public class Acao {
+@Table(name = "VW_MSAN_GABINETE", schema = "CICOP")
+public class MsanGabinete {
   @Id
-	@Column(name = "ID_TP_ACAO")
-	private Long id;
-	@Column(name = "DESC_TP_ACAO")
-	private String descAcao;
+  @Column(name = "MSAN_GABINETE")
+  private String msanGabinete;
+  @Column(name = "CIDADE")
+  private String cidade;
+  @Column(name = "FLAG_EXTERNO")
+  private Long flagExterno; 
 }

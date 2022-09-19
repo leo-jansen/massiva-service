@@ -14,23 +14,23 @@ import lombok.NoArgsConstructor;
 @Data
 @Entity
 @NoArgsConstructor
-@Table(name = "COP_APP_METAL_TP_FALHA", schema = "CICOP")
+@Table(name = "COP_APP_METAL_TP_MANUTENCAO", schema = "CICOP")
 public class Manutencao {
   @Id
   @Column(name = "ID_TP_MANUTENCAO")
   @SequenceGenerator(name = "manutencao", sequenceName = "sq_tp_manutencao", allocationSize = 1)
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "manutencao")
-  private int id;
+  private Long id;
   @Column(name = "DESC_TP_MANUTENCAO")
   private String descManutencao;
   @Column(name = "ID_TP_ACAO")
-  private int idAcao;
+  private Long idAcao;
   @Column(name = "FLAG_INDISPONIBILIDADE")
-  private int flagIndisponibilidade;
+  private Long flagIndisponibilidade;
   @Column(name = "MINUTOS_INDISPONIBILIDADE")
-  private int minutosIndisponibilidade;
+  private Long minutosIndisponibilidade;
   @Column(name = "MINUTOS_ATIVIDADE")
-  private int minutoAtividade;
+  private Long minutoAtividade;
   @Column(name = "FLAG_ATIVO")
-  private int flagAtivo;
+  private Long flagAtivo;
 }
