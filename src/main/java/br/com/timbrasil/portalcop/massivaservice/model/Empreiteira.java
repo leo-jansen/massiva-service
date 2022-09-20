@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "COP_APP_METAL_EMPREITEIRAS", schema = "CICOP")
 public class Empreiteira {
   @Id
-  @SequenceGenerator(name = "empreiteira", sequenceName = "SQ_EMPREITEIRA", allocationSize = 1)
+  @SequenceGenerator(name = "empreiteira", sequenceName = "CICOP.SQ_EMPREITEIRA", allocationSize = 1)
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "empreiteira")
   private Long id;
   @Column(name = "NOME_EMPREITEIRA")

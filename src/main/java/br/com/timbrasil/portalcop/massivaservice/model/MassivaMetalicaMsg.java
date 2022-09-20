@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 public class MassivaMetalicaMsg {
   @Id
   @Column(name = "MSG_ID")
-  @SequenceGenerator(name = "TB_METAL_MASSIVA_MSG_ID_GENERATOR", sequenceName = "SQ_COP_APP_METAL_MASIVA_MSG", allocationSize = 1)
+  @SequenceGenerator(name = "TB_METAL_MASSIVA_MSG_ID_GENERATOR", sequenceName = "CICOP.SQ_COP_APP_METAL_MASIVA_MSG", allocationSize = 1)
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TB_METAL_MASSIVA_MSG_ID_GENERATOR")
   private Long msgId;
   @Column(name = "DT_ACAO")
@@ -31,4 +31,11 @@ public class MassivaMetalicaMsg {
   private String usuario;
   @Column(name = "ACAO_EXEC")
   private String acaoExec;
+
+  public MassivaMetalicaMsg(String idMassiva, String usuario, String acaoExec) {
+    this.idMassiva = idMassiva;
+    this.dataAcao = LocalDateTime.now();
+    this.usuario = usuario;
+    this.acaoExec = acaoExec;
+  }
 }

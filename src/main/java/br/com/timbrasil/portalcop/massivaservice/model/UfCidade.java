@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "COP_APP_UF_CIDADE", schema = "cicop")
 public class UfCidade {
   @Id
-  @SequenceGenerator(name = "ufCidade", sequenceName = "sq_uf", allocationSize = 1)
+  @SequenceGenerator(name = "ufCidade", sequenceName = "cicop.sq_uf", allocationSize = 1)
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ufCidade")
   private Long id;
   @Column(name = "UF")

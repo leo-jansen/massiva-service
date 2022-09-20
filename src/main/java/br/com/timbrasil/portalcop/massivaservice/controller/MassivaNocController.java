@@ -25,4 +25,9 @@ public class MassivaNocController {
     }
     return ResponseEntity.ok(listaMassivas);
   }
+
+  @GetMapping("/telaInclusao")
+  public void getTelaInclusao() {
+    
+  }
 }

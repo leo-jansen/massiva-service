@@ -20,4 +20,5 @@ public class MassivaService {
     List<MassivaDto> listaMassivas = massivaRepository.getListaMassivas();
     return listaMassivas;
   }
+  
 }
