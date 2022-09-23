@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.timbrasil.portalcop.massivaservice.dto.MassivaDto;
+import br.com.timbrasil.portalcop.massivaservice.dto.NovoRegistroNocDto;
 import br.com.timbrasil.portalcop.massivaservice.service.MassivaService;
 
 @RestController
@@ -27,7 +28,8 @@ public class MassivaNocController {
   }
 
   @GetMapping("/telaInclusao")
-  public void getTelaInclusao() {
-    
+  public ResponseEntity<NovoRegistroNocDto> getTelaInclusao() {
+    NovoRegistroNocDto telaInclusaoMassiva = massivaService.getTelaInclusaoMassiva();
+    return ResponseEntity.ok(telaInclusaoMassiva);
   }
 }

@@ -138,4 +138,70 @@ public class MassivaSql {
     ORDER BY
       TB2.dtAbertura DESC
   """;
+
+  public static final String QUERIE_LISTAR_MSANS = """
+    SELECT
+      DISTINCT MSAN,
+      MODELO,
+      UF
+    FROM
+      CICOP.WEBCOP_TOPOLOGIA_REDE TB1,
+      CICOP.VW_NRM_TOPOLOGY_NODE_UF TB2
+    WHERE
+      MSAN = TB2.NODE_NAME
+    ORDER BY
+      MSAN    
+  """;
+
+  public static final String SQL_GET_AGREGADORES = """
+    SELECT
+      DISTINCT AGREGADOR,
+      UF
+    FROM
+      CICOP.WEBCOP_TOPOLOGIA_REDE TB1,
+      CICOP.VW_NRM_TOPOLOGY_NODE_UF TB2
+    WHERE
+      AGREGADOR = TB2.NODE_NAME
+    ORDER BY
+      AGREGADOR    
+  """;
+
+  public static final String QUERY_GET_DISTRIBUIDORES_MASSIVA = """
+    SELECT
+      DISTINCT DISTRIBUIDOR,
+      UF
+    FROM
+      CICOP.WEBCOP_TOPOLOGIA_REDE TB1,
+      CICOP.VW_NRM_TOPOLOGY_NODE_UF TB2
+    WHERE
+      DISTRIBUIDOR = TB2.NODE_NAME
+    ORDER BY
+      DISTRIBUIDOR    
+  """;
+
+  public static final String QUERY_GET_BRAS_MASSIVA = """
+    SELECT
+      DISTINCT BRAS,
+      UF
+    FROM
+      CICOP.WEBCOP_TOPOLOGIA_REDE TB1,
+      CICOP.VW_NRM_TOPOLOGY_NODE_UF TB2
+    WHERE
+      BRAS = TB2.NODE_NAME
+    ORDER BY
+      BRAS
+  """;
+
+  public static final String QUERY_GET_ANEL_MASSIVA = """
+    SELECT
+      DISTINCT ANEL,
+      UF
+    FROM
+      CICOP.WEBCOP_TOPOLOGIA_REDE TB1,
+      CICOP.VW_NRM_TOPOLOGY_ANEL_UF TB2
+    WHERE
+      ANEL = TB2.TOPOLOGY
+    ORDER BY
+      ANEL
+  """;
 }
