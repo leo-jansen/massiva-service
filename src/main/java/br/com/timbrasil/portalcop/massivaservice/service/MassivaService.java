@@ -56,6 +56,7 @@ public class MassivaService {
   }
 
   public NovoRegistroNocDto getTelaInclusaoMassiva() {
+    log.info("Buscando dados de: Equipe Responsavel | UF | Prioridade | Tipo Abertura");
     List<MassivaEquipeResp> listaMassivaEquipeResp = massivaEquipeRespRepository.findAll();
     List<UfDto> listaUf = ufRepository.getListaUf();
     List<MassivaPrioridade> listaMassivaPrioridade = massivaPrioridadeRepository.findAll();
@@ -67,6 +68,7 @@ public class MassivaService {
   
   @SuppressWarnings("unchecked")
   public List<MsanDto> getMsan(String uf) {
+    log.info("Buscando Msan para a uf: " + uf);
     List<MsanDto> listaMsan = (List<MsanDto>) 
     entityManager
       .createNativeQuery(MassivaSql.QUERIE_LISTAR_MSANS, MsanDto.class)
@@ -77,6 +79,7 @@ public class MassivaService {
   
   @SuppressWarnings("unchecked")
   public List<AgregadorDto> getAgregador(String uf) {
+    log.info("Buscando Agregador para a uf: " + uf);
     List<AgregadorDto> listAgregador = (List<AgregadorDto>) 
     entityManager
       .createNativeQuery(MassivaSql.SQL_GET_AGREGADORES, AgregadorDto.class)
@@ -87,6 +90,7 @@ public class MassivaService {
   
   @SuppressWarnings("unchecked")
   public List<DistribuidorDto> getDistribuidor(String uf) {
+    log.info("Buscando Distribuidor para a uf: " + uf);
     List<DistribuidorDto> listDistribuidor = (List<DistribuidorDto>) 
     entityManager
       .createNativeQuery(MassivaSql.QUERY_GET_DISTRIBUIDORES_MASSIVA, DistribuidorDto.class)
@@ -97,6 +101,7 @@ public class MassivaService {
   
   @SuppressWarnings("unchecked")
   public List<BrasDto> getbras(String uf) {
+    log.info("Buscando Bras para a uf: " + uf);
     List<BrasDto> listBras = (List<BrasDto>) 
     entityManager
       .createNativeQuery(MassivaSql.QUERY_GET_BRAS_MASSIVA, BrasDto.class)
@@ -107,6 +112,7 @@ public class MassivaService {
 
   @SuppressWarnings("unchecked")
   public List<AnelDto> getAnel(String uf) {
+    log.info("Buscando Anel para a uf: " + uf);
     List<AnelDto> listAnel = (List<AnelDto>)
     entityManager
       .createNativeQuery(MassivaSql.QUERY_GET_ANEL_MASSIVA, AnelDto.class)
@@ -117,6 +123,7 @@ public class MassivaService {
 
   @SuppressWarnings("unchecked")
   public List<PortaDto> getPorta() {
+    log.info("Buscando Porta");
     List<PortaDto> listPorta = (List<PortaDto>) 
     entityManager
       .createNativeQuery(PortaSql.QUERIE_SLOTS_POR_MSAN, PortaDto.class)
