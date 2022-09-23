@@ -13,14 +13,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class NovoRegistroNocDto {
-  private List<MassivaEquipeResp> listaMassivaEquipeResp;
-  private List<UfDto> listaUf;
-  private List<MassivaPrioridade> listaMassivaPrioridade;
-  private List<MassivaSubTpAbertura> listaMassivaSubTpAbertura;
-  private List<MsanDto> listaMsan;
-  private List<AgregadorDto> listAgregador;
-  private List<DistribuidorDto> listDistribuidor;
-  private List<BrasDto> listBras;
-  private List<AnelDto> listAnel;
-  private List<PortaDto> listPorta;
+  private List<MassivaEquipeResp> massivaEquipeResp;
+  private List<UfDto> uf;
+  private List<MassivaPrioridade> massivaPrioridade;
+  private List<MassivaSubTpAbertura> massivaSubTpAbertura;
 }

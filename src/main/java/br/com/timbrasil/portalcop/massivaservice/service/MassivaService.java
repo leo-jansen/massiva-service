@@ -60,13 +60,67 @@ public class MassivaService {
     List<UfDto> listaUf = ufRepository.getListaUf();
     List<MassivaPrioridade> listaMassivaPrioridade = massivaPrioridadeRepository.findAll();
     List<MassivaSubTpAbertura> listaMassivaSubTpAbertura = massivaSubTpAberturaRepository.findAll();
-    List<MsanDto> listaMsan = (List<MsanDto>) entityManager.createNativeQuery(MassivaSql.QUERIE_LISTAR_MSANS, MsanDto.class).getResultList();
-    List<AgregadorDto> listAgregador = (List<AgregadorDto>) entityManager.createNativeQuery(MassivaSql.SQL_GET_AGREGADORES).getResultList();
-    List<DistribuidorDto> listDistribuidor = (List<DistribuidorDto>) entityManager.createNativeQuery(MassivaSql.QUERY_GET_DISTRIBUIDORES_MASSIVA, DistribuidorDto.class).getResultList();
-    List<BrasDto> listBras = (List<BrasDto>) entityManager.createNativeQuery(MassivaSql.QUERY_GET_BRAS_MASSIVA, BrasDto.class).getResultList();
-    List<AnelDto> listAnel = (List<AnelDto>) entityManager.createNativeQuery(MassivaSql.QUERY_GET_ANEL_MASSIVA, AnelDto.class).getResultList();
-    List<PortaDto> listPorta = (List<PortaDto>) entityManager.createNativeQuery(PortaSql.QUERIE_SLOTS_POR_MSAN, PortaDto.class).getResultList();
-    NovoRegistroNocDto novoRegistroNocDto = new NovoRegistroNocDto(listaMassivaEquipeResp, listaUf, listaMassivaPrioridade, listaMassivaSubTpAbertura, listaMsan, listAgregador, listDistribuidor, listBras, listAnel, listPorta);
+    NovoRegistroNocDto novoRegistroNocDto = new NovoRegistroNocDto(listaMassivaEquipeResp, listaUf,
+    listaMassivaPrioridade, listaMassivaSubTpAbertura);
     return novoRegistroNocDto;
+  }
+  
+  @SuppressWarnings("unchecked")
+  public List<MsanDto> getMsan(String uf) {
+    List<MsanDto> listaMsan = (List<MsanDto>) 
+    entityManager
+      .createNativeQuery(MassivaSql.QUERIE_LISTAR_MSANS, MsanDto.class)
+      .setParameter("estado", uf)
+      .getResultList();
+    return listaMsan;
+  }
+  
+  @SuppressWarnings("unchecked")
+  public List<AgregadorDto> getAgregador(String uf) {
+    List<AgregadorDto> listAgregador = (List<AgregadorDto>) 
+    entityManager
+      .createNativeQuery(MassivaSql.SQL_GET_AGREGADORES, AgregadorDto.class)
+      .setParameter("estado", uf)
+      .getResultList();
+    return listAgregador;
+  }
+  
+  @SuppressWarnings("unchecked")
+  public List<DistribuidorDto> getDistribuidor(String uf) {
+    List<DistribuidorDto> listDistribuidor = (List<DistribuidorDto>) 
+    entityManager
+      .createNativeQuery(MassivaSql.QUERY_GET_DISTRIBUIDORES_MASSIVA, DistribuidorDto.class)
+      .setParameter("estado", uf)
+      .getResultList();
+    return listDistribuidor;
+  }
+  
+  @SuppressWarnings("unchecked")
+  public List<BrasDto> getbras(String uf) {
+    List<BrasDto> listBras = (List<BrasDto>) 
+    entityManager
+      .createNativeQuery(MassivaSql.QUERY_GET_BRAS_MASSIVA, BrasDto.class)
+      .setParameter("estado", uf)
+      .getResultList();
+    return listBras;
+  }
+
+  @SuppressWarnings("unchecked")
+  public List<AnelDto> getAnel(String uf) {
+    List<AnelDto> listAnel = (List<AnelDto>)
+    entityManager
+      .createNativeQuery(MassivaSql.QUERY_GET_ANEL_MASSIVA, AnelDto.class)
+      .setParameter("estado", uf)
+      .getResultList();
+    return listAnel;
+  }
+
+  @SuppressWarnings("unchecked")
+  public List<PortaDto> getPorta() {
+    List<PortaDto> listPorta = (List<PortaDto>) 
+    entityManager
+      .createNativeQuery(PortaSql.QUERIE_SLOTS_POR_MSAN, PortaDto.class)
+      .getResultList();
+    return listPorta;
   }
 }

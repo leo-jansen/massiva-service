@@ -149,6 +149,7 @@ public class MassivaSql {
       CICOP.VW_NRM_TOPOLOGY_NODE_UF TB2
     WHERE
       MSAN = TB2.NODE_NAME
+      AND UF =:estado
     ORDER BY
       MSAN    
   """;
@@ -162,6 +163,7 @@ public class MassivaSql {
       CICOP.VW_NRM_TOPOLOGY_NODE_UF TB2
     WHERE
       AGREGADOR = TB2.NODE_NAME
+      AND UF =:estado
     ORDER BY
       AGREGADOR    
   """;
@@ -175,6 +177,7 @@ public class MassivaSql {
       CICOP.VW_NRM_TOPOLOGY_NODE_UF TB2
     WHERE
       DISTRIBUIDOR = TB2.NODE_NAME
+      AND UF =:estado
     ORDER BY
       DISTRIBUIDOR    
   """;
@@ -188,6 +191,7 @@ public class MassivaSql {
       CICOP.VW_NRM_TOPOLOGY_NODE_UF TB2
     WHERE
       BRAS = TB2.NODE_NAME
+      AND UF =:estado
     ORDER BY
       BRAS
   """;
@@ -201,6 +205,7 @@ public class MassivaSql {
       CICOP.VW_NRM_TOPOLOGY_ANEL_UF TB2
     WHERE
       ANEL = TB2.TOPOLOGY
+      AND UF =:estado
     ORDER BY
       ANEL
   """;
