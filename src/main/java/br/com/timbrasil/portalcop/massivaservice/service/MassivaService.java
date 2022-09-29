@@ -391,4 +391,14 @@ public class MassivaService {
     List<RelatorioMassivaDto> relatorioMassiva = massivaServiceIdRepository.getRelatorioMassiva(idMassiva);
     return relatorioMassiva;
   }
+
+  @Transactional
+  public void modifySubtipo(Long idMassiva, Long idSubtipo) throws Exception {
+    log.info("Atualizando subtipo da massiva de id: " + idMassiva + " para o subtipo: " + idSubtipo);
+    Optional<Massiva> massiva = massivaRepository.findById(idMassiva);
+    if (massiva.isEmpty()) {
+      throw new Exception("Id da massiva não existe");
+    }
+    massiva.get().setFkSubTipoAbertura(idSubtipo);
+  }
 }

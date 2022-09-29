@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -42,7 +43,7 @@ public class MassivaNocController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<?> getMassiva(@PathVariable("id") Long id){
+  public ResponseEntity<?> getMassiva(@PathVariable("id") Long id) {
     try {
       MassivaDetalhadaDto massivaDetalhadaDto = massivaService.getMassiva(id);
       return ResponseEntity.ok(massivaDetalhadaDto);
@@ -55,6 +56,16 @@ public class MassivaNocController {
   public ResponseEntity<List<RelatorioMassivaDto>> getRelatorio(@PathVariable("id") Long id) {
     List<RelatorioMassivaDto> relatorio = massivaService.getRelatorio(id);
     return ResponseEntity.ok(relatorio);
+  }
+
+  @PatchMapping("/{idMassiva}/{idSubtipo}")
+  public ResponseEntity<?> modifySubtipo(@PathVariable("idMassiva") Long idMassiva, @PathVariable("idSubtipo") Long idSubtipo) {
+    try {
+      massivaService.modifySubtipo(idMassiva, idSubtipo);
+      return ResponseEntity.ok().build();
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
+    }
   }
 
   @GetMapping("/telaInclusao")
