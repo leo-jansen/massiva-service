@@ -4,7 +4,10 @@ import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import lombok.Data;
@@ -16,7 +19,8 @@ import lombok.NoArgsConstructor;
 @Table(name = "TB_MASSIVA", schema = "CICOP")
 public class Massiva {
   @Id
-  @Column(name = "ID")
+  @SequenceGenerator(name = "TB_MASSIVA_ID_GENERATOR", sequenceName = "CICOP.SQ_MASSIVA", allocationSize = 1)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TB_MASSIVA_ID_GENERATOR")
   private Long id;
   @Column(name = "FK_ATIVIDADE")
   private Long fkAtividade;
@@ -70,4 +74,28 @@ public class Massiva {
   private Long qtdIndisponiveis;
   @Column(name = "FLAG_NTT_CANCELADO")
   private Long flagNttCancelado;
+
+  public Massiva(Long fkAtividade, Long fkSubTipoAbertura, Long fkTipoTopologia, Long fkCidade,
+      Long fkEquipeRespAbertura, String ntt, Long controle, String localidade, String detalheTecnico, String causa,
+      LocalDateTime dtAcionamento, LocalDateTime dtPrevisao, LocalDateTime dtFalha, Long fkPrioridade,
+      String observacao, String areaAbertura, Long qtdElementos, Long qtdIndisponiveis) {
+    this.fkAtividade = fkAtividade;
+    this.fkSubTipoAbertura = fkSubTipoAbertura;
+    this.fkTipoTopologia = fkTipoTopologia;
+    this.fkCidade = fkCidade;
+    this.fkEquipeRespAbertura = fkEquipeRespAbertura;
+    this.ntt = ntt;
+    this.controle = controle;
+    this.localidade = localidade;
+    this.detalheTecnico = detalheTecnico;
+    this.causa = causa;
+    this.dtAcionamento = dtAcionamento;
+    this.dtPrevisao = dtPrevisao;
+    this.dtFalha = dtFalha;
+    this.fkPrioridade = fkPrioridade;
+    this.observacao = observacao;
+    this.areaAbertura = areaAbertura;
+    this.qtdElementos = qtdElementos;
+    this.qtdIndisponiveis = qtdIndisponiveis;
+  }
 }

@@ -17,4 +17,5 @@ public class NovoRegistroNocDto {
   private List<UfDto> uf;
   private List<MassivaPrioridade> massivaPrioridade;
   private List<MassivaSubTpAbertura> massivaSubTpAbertura;
+  private List<TipoDto> listaAtividade;
 }
