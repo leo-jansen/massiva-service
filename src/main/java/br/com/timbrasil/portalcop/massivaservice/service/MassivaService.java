@@ -18,6 +18,7 @@ import br.com.timbrasil.portalcop.massivaservice.dto.MassivaDto;
 import br.com.timbrasil.portalcop.massivaservice.dto.MsanDto;
 import br.com.timbrasil.portalcop.massivaservice.dto.NovoRegistroNocDto;
 import br.com.timbrasil.portalcop.massivaservice.dto.PortaDto;
+import br.com.timbrasil.portalcop.massivaservice.dto.RelatorioMassivaDto;
 import br.com.timbrasil.portalcop.massivaservice.dto.TipoDto;
 import br.com.timbrasil.portalcop.massivaservice.dto.TopologiaDto;
 import br.com.timbrasil.portalcop.massivaservice.dto.UfDto;
@@ -37,6 +38,7 @@ import br.com.timbrasil.portalcop.massivaservice.repositories.MassivaEquipeRespR
 import br.com.timbrasil.portalcop.massivaservice.repositories.MassivaMsanRepository;
 import br.com.timbrasil.portalcop.massivaservice.repositories.MassivaPrioridadeRepository;
 import br.com.timbrasil.portalcop.massivaservice.repositories.MassivaRepository;
+import br.com.timbrasil.portalcop.massivaservice.repositories.MassivaServiceIdRepository;
 import br.com.timbrasil.portalcop.massivaservice.repositories.MassivaSlotRepository;
 import br.com.timbrasil.portalcop.massivaservice.repositories.MassivaSubTpAberturaRepository;
 import br.com.timbrasil.portalcop.massivaservice.repositories.MassivaTpTopologiaRepository;
@@ -86,6 +88,9 @@ public class MassivaService {
 
   @Autowired
   MassivaMsanRepository massivaMsanRepository;
+
+  @Autowired
+  MassivaServiceIdRepository massivaServiceIdRepository;
 
   @Autowired
   UsuarioService usuarioService;
@@ -361,20 +366,29 @@ public class MassivaService {
   }
 
   public MassivaDetalhadaDto getMassiva(Long id) throws Exception {
+    log.info("buscando dados da massiva de id: " + id);
     Optional<MassivaDetalhadaDto> massivaDto = massivaRepository.getMassivaById(id);
     if (massivaDto.isEmpty()) {
       throw new Exception("Massiva não encontrada");
     }
     if (!("AAA".equals(massivaDto.get().getTipoTopologia()) || "VoIP".equals(massivaDto.get().getTipoTopologia()))) {
+      log.info("Buscando lista de equipamento e lista de msan");
       List<String> listEquipamento = massivaEquipamentoRepository.getEquipamentosByFkMassiva(id);
       List<String> listMsan = massivaMsanRepository.getMsanByFkMassiva(id);
       massivaDto.get().setEquipamento(listEquipamento);
       massivaDto.get().setMsan(listMsan);
     }
     if("SLOT".equals(massivaDto.get().getTipoTopologia())) {
+      log.info("Buscando lista de slot");
       List<String> listSlot = massivaSlotRepository.getSlotByFkMassiva(id);
       massivaDto.get().setSlot(listSlot);
     }
     return massivaDto.get();
+  }
+
+  public List<RelatorioMassivaDto> getRelatorio(Long idMassiva) {
+    log.info("Buscando dados para o relatorio de massiva do id: " + idMassiva);
+    List<RelatorioMassivaDto> relatorioMassiva = massivaServiceIdRepository.getRelatorioMassiva(idMassiva);
+    return relatorioMassiva;
   }
 }

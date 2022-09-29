@@ -388,4 +388,19 @@ public class MassivaSql {
     WHERE
       m.fkMassiva = :idMassiva    
   """;
+
+  public static final String SQL_GET_CLIENTES_IMPACTADOS_MASSIVA = """
+    SELECT
+      new br.com.timbrasil.portalcop.massivaservice.dto.RelatorioMassivaDto(
+        SERVICEID.serviceId,
+        MSAN.msan,
+        MASSIVA.ntt
+      )
+    FROM
+      MassivaServiceId SERVICEID
+      JOIN MassivaMsan MSAN ON SERVICEID.fkMsanMassiva = MSAN.id
+      JOIN Massiva MASSIVA ON MSAN.fkMassiva = MASSIVA.id
+    WHERE
+      MSAN.fkMassiva = :idMassiva
+  """;
 }

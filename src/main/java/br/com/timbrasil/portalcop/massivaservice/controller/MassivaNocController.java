@@ -20,6 +20,7 @@ import br.com.timbrasil.portalcop.massivaservice.dto.MassivaDto;
 import br.com.timbrasil.portalcop.massivaservice.dto.MsanDto;
 import br.com.timbrasil.portalcop.massivaservice.dto.NovoRegistroNocDto;
 import br.com.timbrasil.portalcop.massivaservice.dto.PortaDto;
+import br.com.timbrasil.portalcop.massivaservice.dto.RelatorioMassivaDto;
 import br.com.timbrasil.portalcop.massivaservice.form.Nttform;
 import br.com.timbrasil.portalcop.massivaservice.service.MassivaService;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -48,6 +49,12 @@ public class MassivaNocController {
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
+  }
+
+  @GetMapping("/relatorio/{id}")
+  public ResponseEntity<List<RelatorioMassivaDto>> getRelatorio(@PathVariable("id") Long id) {
+    List<RelatorioMassivaDto> relatorio = massivaService.getRelatorio(id);
+    return ResponseEntity.ok(relatorio);
   }
 
   @GetMapping("/telaInclusao")
