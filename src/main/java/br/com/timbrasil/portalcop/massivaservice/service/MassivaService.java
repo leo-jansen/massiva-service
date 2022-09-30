@@ -1,5 +1,6 @@
 package br.com.timbrasil.portalcop.massivaservice.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,6 +23,7 @@ import br.com.timbrasil.portalcop.massivaservice.dto.RelatorioMassivaDto;
 import br.com.timbrasil.portalcop.massivaservice.dto.TipoDto;
 import br.com.timbrasil.portalcop.massivaservice.dto.TopologiaDto;
 import br.com.timbrasil.portalcop.massivaservice.dto.UfDto;
+import br.com.timbrasil.portalcop.massivaservice.form.FinalizarMassivaForm;
 import br.com.timbrasil.portalcop.massivaservice.form.Nttform;
 import br.com.timbrasil.portalcop.massivaservice.model.Atividade;
 import br.com.timbrasil.portalcop.massivaservice.model.Massiva;
@@ -353,7 +355,8 @@ public class MassivaService {
   }
 
   @Transactional
-  public void setRegistroHistoricoAtividade(Long idAtividade, String matricula, String tipoAtividade, String msg, Long idMensagem) {
+  public void setRegistroHistoricoAtividade(Long idAtividade, String matricula, String tipoAtividade, String msg,
+      Long idMensagem) {
     log.info("Resgistrando historico de atividade do tipo " + tipoAtividade);
     Long idUsuario = usuarioService.getIdUsuario(matricula);
     entityManager
@@ -378,7 +381,7 @@ public class MassivaService {
       massivaDto.get().setEquipamento(listEquipamento);
       massivaDto.get().setMsan(listMsan);
     }
-    if("SLOT".equals(massivaDto.get().getTipoTopologia())) {
+    if ("SLOT".equals(massivaDto.get().getTipoTopologia())) {
       log.info("Buscando lista de slot");
       List<String> listSlot = massivaSlotRepository.getSlotByFkMassiva(id);
       massivaDto.get().setSlot(listSlot);
@@ -400,5 +403,38 @@ public class MassivaService {
       throw new Exception("Id da massiva não existe");
     }
     massiva.get().setFkSubTipoAbertura(idSubtipo);
+  }
+
+  @Transactional
+  public void closeMassiva(String matricula, FinalizarMassivaForm finalizarMassivaForm) throws Exception {
+    Long idUsuario = usuarioService.getIdUsuario(matricula);
+    atualizarAtividade(idUsuario, finalizarMassivaForm, "MS_CLS_ATV", 3L);
+    String msg = String.format("Massiva fechada pelo usuário %s.", matricula);
+    setRegistroHistoricoAtividade(finalizarMassivaForm.getId(), matricula, "Massiva", msg, 110L);
+  }
+
+  @Transactional
+  private void atualizarAtividade(Long idUsuario, FinalizarMassivaForm finalizarMassivaForm, String refStatus, Long idModulo) throws Exception {
+    Optional<Long> idStatus = moduloEstadoRepository.getIdByRefStatusAndFkModulo(refStatus, idModulo);
+    if (idStatus.isEmpty()) {
+      throw new Exception("Id da status não encontrado");
+    }
+    Optional<Atividade> atividade = atividadeRepository.findById(finalizarMassivaForm.getId());
+    if (atividade.isEmpty()) {
+      throw new Exception("atividade não encontrado");
+    }
+    atividade.get().setDtUltModificacao(LocalDateTime.now());
+    atividade.get().setFkUsrAbertura(idUsuario);
+    atividade.get().setFkStatus(idStatus.get());
+    Optional<Massiva> massiva = massivaRepository.findById(finalizarMassivaForm.getId());
+    if (massiva.isEmpty()) {
+      throw new Exception("Massiva aberta");
+    }
+    Long fladNttCancelado = finalizarMassivaForm.isNttFechado() ? 1L : 0L;
+    massiva.get().setFkEquipeRespFechamento(finalizarMassivaForm.getFkEquipeRespnsavel());
+    massiva.get().setCausaRaiz(finalizarMassivaForm.getCausaRaiz());
+    massiva.get().setNotaFechamento(finalizarMassivaForm.getNotaFechamento());
+    massiva.get().setDtNormalizacao(finalizarMassivaForm.getDataNormalizar());
+    massiva.get().setFlagNttCancelado(fladNttCancelado);
   }
 }

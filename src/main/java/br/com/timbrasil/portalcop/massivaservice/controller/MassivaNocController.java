@@ -22,6 +22,7 @@ import br.com.timbrasil.portalcop.massivaservice.dto.MsanDto;
 import br.com.timbrasil.portalcop.massivaservice.dto.NovoRegistroNocDto;
 import br.com.timbrasil.portalcop.massivaservice.dto.PortaDto;
 import br.com.timbrasil.portalcop.massivaservice.dto.RelatorioMassivaDto;
+import br.com.timbrasil.portalcop.massivaservice.form.FinalizarMassivaForm;
 import br.com.timbrasil.portalcop.massivaservice.form.Nttform;
 import br.com.timbrasil.portalcop.massivaservice.service.MassivaService;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -62,6 +63,16 @@ public class MassivaNocController {
   public ResponseEntity<?> modifySubtipo(@PathVariable("idMassiva") Long idMassiva, @PathVariable("idSubtipo") Long idSubtipo) {
     try {
       massivaService.modifySubtipo(idMassiva, idSubtipo);
+      return ResponseEntity.ok().build();
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
+    }
+  }
+
+  @PostMapping("/finalizar")
+  public ResponseEntity<?> closeMassiva(FinalizarMassivaForm finalizarMassivaForm){
+    try {
+      massivaService.closeMassiva("", finalizarMassivaForm);
       return ResponseEntity.ok().build();
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
