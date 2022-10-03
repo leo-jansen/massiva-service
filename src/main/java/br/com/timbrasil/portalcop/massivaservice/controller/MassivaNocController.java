@@ -2,6 +2,8 @@ package br.com.timbrasil.portalcop.massivaservice.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -70,7 +72,7 @@ public class MassivaNocController {
   }
 
   @PostMapping("/finalizar")
-  public ResponseEntity<?> closeMassiva(FinalizarMassivaForm finalizarMassivaForm){
+  public ResponseEntity<?> closeMassiva(@RequestBody @Valid FinalizarMassivaForm finalizarMassivaForm){
     try {
       massivaService.closeMassiva("", finalizarMassivaForm);
       return ResponseEntity.ok().build();
