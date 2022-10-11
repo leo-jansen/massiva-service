@@ -9,6 +9,6 @@ import br.com.timbrasil.portalcop.massivaservice.model.Usuario;
 import br.com.timbrasil.portalcop.massivaservice.repositories.sql.UsuarioSql;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Long>{
-  @Query(value = UsuarioSql.FK_ID, nativeQuery = true)
+  @Query(value = UsuarioSql.FK_ID)
   Optional<Usuario> findByfkId(String matricula);
 }

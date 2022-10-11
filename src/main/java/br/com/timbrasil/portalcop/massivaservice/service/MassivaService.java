@@ -25,6 +25,7 @@ import br.com.timbrasil.portalcop.massivaservice.dto.TopologiaDto;
 import br.com.timbrasil.portalcop.massivaservice.dto.UfDto;
 import br.com.timbrasil.portalcop.massivaservice.form.FinalizarMassivaForm;
 import br.com.timbrasil.portalcop.massivaservice.form.Nttform;
+import br.com.timbrasil.portalcop.massivaservice.form.RejeitarMassivaForm;
 import br.com.timbrasil.portalcop.massivaservice.model.Atividade;
 import br.com.timbrasil.portalcop.massivaservice.model.Massiva;
 import br.com.timbrasil.portalcop.massivaservice.model.MassivaEquipamento;
@@ -414,7 +415,8 @@ public class MassivaService {
   }
 
   @Transactional
-  private void atualizarAtividade(Long idUsuario, FinalizarMassivaForm finalizarMassivaForm, String refStatus, Long idModulo) throws Exception {
+  private void atualizarAtividade(Long idUsuario, FinalizarMassivaForm finalizarMassivaForm, String refStatus,
+      Long idModulo) throws Exception {
     Optional<Long> idStatus = moduloEstadoRepository.getIdByRefStatusAndFkModulo(refStatus, idModulo);
     if (idStatus.isEmpty()) {
       throw new Exception("Id da status não encontrado");
@@ -437,4 +439,59 @@ public class MassivaService {
     massiva.get().setDtNormalizacao(finalizarMassivaForm.getDataNormalizar());
     massiva.get().setFlagNttCancelado(fladNttCancelado);
   }
+
+  @Transactional
+  private Long atualizarAtividade(Long idUsuario, Long idAtividade, String refStatus, Long idModulo) throws Exception {
+    Optional<Long> idStatus = moduloEstadoRepository.getIdByRefStatusAndFkModulo(refStatus, idModulo);
+    if (idStatus.isEmpty()) {
+      throw new Exception("Id da status não encontrado");
+    }
+    Optional<Atividade> atividade = atividadeRepository.findById(idAtividade);
+    if (atividade.isEmpty()) {
+      throw new Exception("atividade não encontrado");
+    }
+    atividade.get().setDtUltModificacao(LocalDateTime.now());
+    atividade.get().setFkUsrAbertura(idUsuario);
+    atividade.get().setFkStatus(idStatus.get());
+    return atividade.get().getId();
+  }
+
+  @Transactional
+  public void rejectMassiva(Long id, String motivo, String matricula) throws Exception {
+    log.info("Rejeitando massiva de id: " + id + " com o motivo: " + motivo + " | Usuario: " + matricula);
+    Optional<Massiva> massiva = massivaRepository.findById(id);
+    if (massiva.isEmpty()) {
+      throw new Exception("Id da massiva não encontrado");
+    }
+    Long idUsuario = usuarioService.getIdUsuario(matricula);
+    massiva.get().setMotivoRejeicao(motivo);
+    Long idAtividade = atualizarAtividade(idUsuario, massiva.get().getFkAtividade(), "MS_RJC_ATV", 3L);
+    setRegistroHistoricoAtividade(idAtividade, matricula, "Rejeitar Massiva",
+        String.format("Suspeita rejeitada pelo usuário %s", matricula), 107L);
+  }
+
+  @Transactional
+  public void aceitarMassiva(RejeitarMassivaForm rejeitarMassivaForm, String matricula, String tipo) throws Exception {
+    log.info("Rejeitando massiva " + tipo + " com id " + rejeitarMassivaForm.getId() + " | usuario: " + matricula);
+    Long idUsuario = usuarioService.getIdUsuario(matricula);
+    Optional<Massiva> massiva = massivaRepository.findById(rejeitarMassivaForm.getId());
+    if (massiva.isEmpty()) {
+      throw new Exception("Id da massiva não encontrado");
+    }
+    atualizarAtividade(idUsuario, massiva.get().getFkAtividade(), rejeitarMassivaForm.getTipoAbertura(), 3L);
+    massiva.get().setFkSubTipoAbertura(rejeitarMassivaForm.getFkSubTipoAbertura());
+    massiva.get().setControle(rejeitarMassivaForm.getIdControle());
+    massiva.get().setDetalheTecnico(rejeitarMassivaForm.getDetalheTecnico());
+    massiva.get().setCausa(rejeitarMassivaForm.getSintoma());
+    massiva.get().setDtAcionamento(rejeitarMassivaForm.getDataAcionamento());
+    massiva.get().setDtPrevisao(rejeitarMassivaForm.getDataPrevisao());
+    massiva.get().setDtFalha(rejeitarMassivaForm.getDataFalha());
+    massiva.get().setFkPrioridade(rejeitarMassivaForm.getFkPrioridade());
+    massiva.get().setObservacao(rejeitarMassivaForm.getObservacao());
+    massiva.get().setLocalidade(rejeitarMassivaForm.getLocalidade());
+    massiva.get().setQtdIndisponiveis(rejeitarMassivaForm.getClientesIndisponiveis());
+    setRegistroHistoricoAtividade(idUsuario, matricula, rejeitarMassivaForm.getTipoAbertura(),
+        String.format("Suspeita aceita pelo usuário %s.", matricula), 106L);
+  }
+
 }

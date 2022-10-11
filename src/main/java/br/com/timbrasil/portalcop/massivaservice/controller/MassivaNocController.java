@@ -26,6 +26,7 @@ import br.com.timbrasil.portalcop.massivaservice.dto.PortaDto;
 import br.com.timbrasil.portalcop.massivaservice.dto.RelatorioMassivaDto;
 import br.com.timbrasil.portalcop.massivaservice.form.FinalizarMassivaForm;
 import br.com.timbrasil.portalcop.massivaservice.form.Nttform;
+import br.com.timbrasil.portalcop.massivaservice.form.RejeitarMassivaForm;
 import br.com.timbrasil.portalcop.massivaservice.service.MassivaService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -62,7 +63,8 @@ public class MassivaNocController {
   }
 
   @PatchMapping("/{idMassiva}/{idSubtipo}")
-  public ResponseEntity<?> modifySubtipo(@PathVariable("idMassiva") Long idMassiva, @PathVariable("idSubtipo") Long idSubtipo) {
+  public ResponseEntity<?> modifySubtipo(@PathVariable("idMassiva") Long idMassiva,
+      @PathVariable("idSubtipo") Long idSubtipo) {
     try {
       massivaService.modifySubtipo(idMassiva, idSubtipo);
       return ResponseEntity.ok().build();
@@ -72,9 +74,29 @@ public class MassivaNocController {
   }
 
   @PostMapping("/finalizar")
-  public ResponseEntity<?> closeMassiva(@RequestBody @Valid FinalizarMassivaForm finalizarMassivaForm){
+  public ResponseEntity<?> closeMassiva(@RequestBody @Valid FinalizarMassivaForm finalizarMassivaForm) {
     try {
       massivaService.closeMassiva("", finalizarMassivaForm);
+      return ResponseEntity.ok().build();
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
+    }
+  }
+
+  @PostMapping("/rejeitar/{id}")
+  public ResponseEntity<?> rejectMassiva(@PathVariable("id") Long id, @RequestParam("motivo") String motivo) {
+    try {
+      massivaService.rejectMassiva(id, motivo, "");
+      return ResponseEntity.ok().build();
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
+    }
+  }
+
+  @PatchMapping("/aceitar")
+  public ResponseEntity<?> acceptedMassiva(@RequestBody @Valid RejeitarMassivaForm rejeitarMassivaForm) {
+    try {
+      massivaService.aceitarMassiva(rejeitarMassivaForm, "", "NOC");
       return ResponseEntity.ok().build();
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
