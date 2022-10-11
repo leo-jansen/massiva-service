@@ -123,11 +123,7 @@ public class MassivaMetalicaService {
   @Transactional
   public void regMsgMetalMassiva(String idMassiva, String matricula, String acao) {
     try {
-      MassivaMetalicaMsg massivaMetalicaMsg = new MassivaMetalicaMsg();
-      massivaMetalicaMsg.setIdMassiva(idMassiva);
-      massivaMetalicaMsg.setDataAcao(LocalDateTime.now());
-      massivaMetalicaMsg.setUsuario(matricula);
-      massivaMetalicaMsg.setAcaoExec(acao);
+      MassivaMetalicaMsg massivaMetalicaMsg = new MassivaMetalicaMsg(idMassiva, matricula, acao);
       massivaMetalicaMsgRepository.save(massivaMetalicaMsg);
     } catch (Exception e) {
       log.error("regMsgMetalMassiva(" + idMassiva + ", " + matricula + ", " + acao + ") - " + e.getLocalizedMessage());

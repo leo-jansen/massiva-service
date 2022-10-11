@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 public class Manutencao {
   @Id
   @Column(name = "ID_TP_MANUTENCAO")
-  @SequenceGenerator(name = "manutencao", sequenceName = "sq_tp_manutencao", allocationSize = 1)
+  @SequenceGenerator(name = "manutencao", sequenceName = "cicop.sq_tp_manutencao", allocationSize = 1)
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "manutencao")
   private Long id;
   @Column(name = "DESC_TP_MANUTENCAO")

@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "COP_APP_METAL_MASSIVA", schema = "CICOP")
 public class MassivaMetal {
   @Id
-  @SequenceGenerator(name = "TB_METAL_MASSIVA_ID_GENERATOR", sequenceName = "COP_SEQ_METAL_MASSIVA", allocationSize = 1)
+  @SequenceGenerator(name = "TB_METAL_MASSIVA_ID_GENERATOR", sequenceName = "CICOP.COP_SEQ_METAL_MASSIVA", allocationSize = 1)
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TB_METAL_MASSIVA_ID_GENERATOR")
   private Long id;
   @Column(name = "ID_MASSIVA")
@@ -107,5 +107,6 @@ public class MassivaMetal {
     this.dataIniIndisp = dataIniIndisp;
     this.dataFimIndisp = dataFimIndisp;
     this.quantClientes = 0L;
+    this.status = 0L;
   }
 }

@@ -65,8 +65,8 @@ public class MassivaMetalicaController {
   }
 
   @GetMapping("/relatorio/{id}")
-  public List<Relatorio> getRelatorioMassiva(@PathVariable("id") Long id) {
+  public ResponseEntity<List<Relatorio>> getRelatorioMassiva(@PathVariable("id") Long id) {
     List<Relatorio> relatorio = massivaMetalicaService.getRelatorio(id);
-    return relatorio;
+    return ResponseEntity.ok(relatorio);
   }
 }
