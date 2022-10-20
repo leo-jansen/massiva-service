@@ -34,6 +34,7 @@ import br.com.timbrasil.portalcop.massivaservice.model.MassivaMsan;
 import br.com.timbrasil.portalcop.massivaservice.model.MassivaPrioridade;
 import br.com.timbrasil.portalcop.massivaservice.model.MassivaSlot;
 import br.com.timbrasil.portalcop.massivaservice.model.MassivaSubTpAbertura;
+import br.com.timbrasil.portalcop.massivaservice.model.OttMassiva;
 import br.com.timbrasil.portalcop.massivaservice.repositories.AtividadeRepository;
 import br.com.timbrasil.portalcop.massivaservice.repositories.AtividadeTipoRepository;
 import br.com.timbrasil.portalcop.massivaservice.repositories.MassivaEquipamentoRepository;
@@ -46,6 +47,7 @@ import br.com.timbrasil.portalcop.massivaservice.repositories.MassivaSlotReposit
 import br.com.timbrasil.portalcop.massivaservice.repositories.MassivaSubTpAberturaRepository;
 import br.com.timbrasil.portalcop.massivaservice.repositories.MassivaTpTopologiaRepository;
 import br.com.timbrasil.portalcop.massivaservice.repositories.ModuloEstadoRepository;
+import br.com.timbrasil.portalcop.massivaservice.repositories.OttMassivaRepository;
 import br.com.timbrasil.portalcop.massivaservice.repositories.UfRepository;
 import br.com.timbrasil.portalcop.massivaservice.repositories.sql.AtividadeSql;
 import br.com.timbrasil.portalcop.massivaservice.repositories.sql.MassivaSql;
@@ -94,6 +96,9 @@ public class MassivaService {
 
   @Autowired
   MassivaServiceIdRepository massivaServiceIdRepository;
+
+  @Autowired
+  OttMassivaRepository ottMassivaRepository; 
 
   @Autowired
   UsuarioService usuarioService;
@@ -494,4 +499,9 @@ public class MassivaService {
         String.format("Suspeita aceita pelo usuário %s.", matricula), 106L);
   }
 
+  public List<OttMassiva> getOttsCampo() {
+    log.info("Buscando otts em campo " + LocalDateTime.now());
+    List<OttMassiva> listOtts = ottMassivaRepository.findAll();
+    return listOtts;
+  }
 }

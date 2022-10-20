@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import br.com.timbrasil.portalcop.massivaservice.dto.*;
 import br.com.timbrasil.portalcop.massivaservice.form.*;
+import br.com.timbrasil.portalcop.massivaservice.model.OttMassiva;
 import br.com.timbrasil.portalcop.massivaservice.service.MassivaService;
 
 @RestController
@@ -66,6 +67,12 @@ public class MassivaCopController {
   public ResponseEntity<NovoRegistroNocDto> getTelaInclusao() {
     NovoRegistroNocDto telaInclusaoMassiva = massivaService.getTelaInclusaoMassiva();
     return ResponseEntity.ok(telaInclusaoMassiva);
+  }
+
+  @GetMapping("/otts")
+  public ResponseEntity<List<OttMassiva>> getOttsCampo() {
+    List<OttMassiva> ottsCampo = massivaService.getOttsCampo();
+    return ResponseEntity.ok(ottsCampo);
   }
 
   @GetMapping("/msan")
