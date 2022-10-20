@@ -75,6 +75,12 @@ public class MassivaCopController {
     return ResponseEntity.ok(ottsCampo);
   }
 
+  @GetMapping("/encerradas")
+  public ResponseEntity<List<MassivaDto>> getMassivasEncerradas() {
+    List<MassivaDto> massivaEncerradas = massivaService.getMassivaEncerradas();
+    return ResponseEntity.ok(massivaEncerradas);
+  }
+
   @GetMapping("/msan")
   public ResponseEntity<List<MsanDto>> getMsan(@RequestParam("uf") String uf) {
     List<MsanDto> listaMsan = massivaService.getMsan(uf);

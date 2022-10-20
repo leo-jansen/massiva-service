@@ -20,4 +20,7 @@ public interface MassivaRepository extends JpaRepository<Massiva, Long>{
 
   @Query(value = MassivaSql.QUERY_BUSCAR_MASSIVA)
   Optional<MassivaDetalhadaDto> getMassivaById(Long idMassiva);
+
+  @Query(value = MassivaSql.QUERY_LISTA_MASSIVAS_ENCERRADAS)
+  List<MassivaDto> getMassivaEncerradas();
 }

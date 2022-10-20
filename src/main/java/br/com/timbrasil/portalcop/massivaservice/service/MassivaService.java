@@ -504,4 +504,10 @@ public class MassivaService {
     List<OttMassiva> listOtts = ottMassivaRepository.findAll();
     return listOtts;
   }
+
+  public List<MassivaDto> getMassivaEncerradas() {
+    log.info("Buscando massivas encerradas nas ultimas 24hr");
+    List<MassivaDto> massivaEncerradas = massivaRepository.getMassivaEncerradas();
+    return massivaEncerradas;
+  }
 }
