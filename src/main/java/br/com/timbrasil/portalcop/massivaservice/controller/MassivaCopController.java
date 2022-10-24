@@ -56,7 +56,7 @@ public class MassivaCopController {
   @PostMapping("/novo")
   public ResponseEntity<?> postMethodName(@RequestBody Nttform ntt) {
     try {
-      massivaService.newNtt(ntt, "", "CRT");
+      massivaService.newNtt(ntt, "F8057991", "COP");
       return ResponseEntity.status(HttpStatus.CREATED).build();
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();

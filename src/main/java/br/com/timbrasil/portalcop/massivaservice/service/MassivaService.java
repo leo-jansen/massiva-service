@@ -98,7 +98,7 @@ public class MassivaService {
   MassivaServiceIdRepository massivaServiceIdRepository;
 
   @Autowired
-  OttMassivaRepository ottMassivaRepository; 
+  OttMassivaRepository ottMassivaRepository;
 
   @Autowired
   UsuarioService usuarioService;
@@ -258,7 +258,7 @@ public class MassivaService {
   }
 
   @Transactional
-  public void setMsanMassiva(Nttform nttForm, Long id) {
+  public void setMsanMassiva(Nttform nttForm, Long idMassiva) {
     TopologiaDto topologiaDto;
     switch (nttForm.getTipoTopologia()) {
       case "SLOT":
@@ -267,7 +267,8 @@ public class MassivaService {
             .setParameter("msan", nttForm.getEquipamento().get(0))
             .getSingleResult();
         massivaMsanRepository
-            .save(new MassivaMsan(id, topologiaDto.getAnel(), topologiaDto.getMsan(), topologiaDto.getGabinete()));
+            .save(
+                new MassivaMsan(idMassiva, topologiaDto.getAnel(), topologiaDto.getMsan(), topologiaDto.getGabinete()));
         break;
       case "MSAN":
         topologiaDto = (TopologiaDto) entityManager
@@ -275,7 +276,8 @@ public class MassivaService {
             .setParameter("listMsan", nttForm.getEquipamento())
             .getSingleResult();
         massivaMsanRepository
-            .save(new MassivaMsan(id, topologiaDto.getAnel(), topologiaDto.getMsan(), topologiaDto.getGabinete()));
+            .save(
+                new MassivaMsan(idMassiva, topologiaDto.getAnel(), topologiaDto.getMsan(), topologiaDto.getGabinete()));
         break;
       case "AGREGADOR":
         topologiaDto = (TopologiaDto) entityManager
@@ -283,7 +285,7 @@ public class MassivaService {
             .setParameter("listAgregador", nttForm.getEquipamento())
             .getSingleResult();
         massivaMsanRepository
-            .save(new MassivaMsan(id, topologiaDto.getAnel(), topologiaDto.getMsan(), topologiaDto.getGabinete()));
+            .save(new MassivaMsan(idMassiva, topologiaDto.getAnel(), topologiaDto.getMsan(), topologiaDto.getGabinete()));
         break;
       case "DISTRIBUIDOR":
         topologiaDto = (TopologiaDto) entityManager
@@ -291,7 +293,7 @@ public class MassivaService {
             .setParameter("listDistribuidor", nttForm.getEquipamento())
             .getSingleResult();
         massivaMsanRepository
-            .save(new MassivaMsan(id, topologiaDto.getAnel(), topologiaDto.getMsan(), topologiaDto.getGabinete()));
+            .save(new MassivaMsan(idMassiva, topologiaDto.getAnel(), topologiaDto.getMsan(), topologiaDto.getGabinete()));
         break;
       case "BRAS":
         topologiaDto = (TopologiaDto) entityManager
@@ -299,7 +301,7 @@ public class MassivaService {
             .setParameter("listBras", nttForm.getEquipamento())
             .getSingleResult();
         massivaMsanRepository
-            .save(new MassivaMsan(id, topologiaDto.getAnel(), topologiaDto.getMsan(), topologiaDto.getGabinete()));
+            .save(new MassivaMsan(idMassiva, topologiaDto.getAnel(), topologiaDto.getMsan(), topologiaDto.getGabinete()));
         break;
       default:
         break;

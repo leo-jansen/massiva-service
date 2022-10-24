@@ -148,7 +148,7 @@ public class MassivaNocController {
   @PostMapping("/novo")
   public ResponseEntity<?> postMethodName(@RequestBody Nttform ntt) {
     try {
-      massivaService.newNtt(ntt, "", "NOC");
+      massivaService.newNtt(ntt, "F8057991", "NOC");
       return ResponseEntity.status(HttpStatus.CREATED).build();
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
