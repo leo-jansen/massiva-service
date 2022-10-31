@@ -15,37 +15,68 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class Nttform {
-  @NotBlank @NotEmpty @NotNull
+  @NotBlank
+  @NotEmpty
+  @NotNull
   private String ntt;
-  @NotBlank @NotEmpty @NotNull
+  @NotBlank
+  @NotEmpty
   private Long equipeResponsavel;
-  @NotBlank @NotEmpty @NotNull
+  @NotBlank
+  @NotEmpty
+  @NotNull
   private String tipoAtividade;
-  @NotBlank @NotEmpty @NotNull
+  @NotBlank
+  @NotEmpty
+  @NotNull
   private Long subTipoAbertura;
-  @NotBlank @NotEmpty @NotNull
+  @NotBlank
+  @NotEmpty
+  @NotNull
   private Long idControle;
-  @NotBlank @NotEmpty @NotNull
+  @NotBlank
+  @NotEmpty
+  @NotNull
   private String localidade;
-  @NotBlank @NotEmpty @NotNull
+  @NotBlank
+  @NotEmpty
+  @NotNull
   private Long cidade;
-  @NotBlank @NotEmpty @NotNull
+  @NotBlank
+  @NotEmpty
+  @NotNull
   private Long prioridade;
-  @NotBlank @NotEmpty @NotNull
+  @NotBlank
+  @NotEmpty
+  @NotNull
   private LocalDateTime dataFalha;
-  @NotBlank @NotEmpty @NotNull
+  @NotBlank
+  @NotEmpty
+  @NotNull
   private LocalDateTime dataAcionamento;
-  @NotBlank @NotEmpty @NotNull
+  @NotBlank
+  @NotEmpty
+  @NotNull
   private LocalDateTime previsaoAcionamento;
-  @NotBlank @NotEmpty @NotNull
+  @NotBlank
+  @NotEmpty
+  @NotNull
   private Long clientesIndisponiveis;
-  @NotBlank @NotEmpty @NotNull
+  @NotBlank
+  @NotEmpty
+  @NotNull
   private String detalhesTecnicos;
-  @NotBlank @NotEmpty @NotNull
+  @NotBlank
+  @NotEmpty
+  @NotNull
   private String sintoma;
-  @NotBlank @NotEmpty @NotNull
+  @NotBlank
+  @NotEmpty
+  @NotNull
   private String observacao;
-  @NotBlank @NotEmpty @NotNull
+  @NotBlank
+  @NotEmpty
+  @NotNull
   private String tipoTopologia;
   private List<String> equipamento;
   private List<String> slot;

@@ -116,4 +116,10 @@ public class MassivaCopController {
     List<PortaDto> listaPorta = massivaService.getPorta();
     return ResponseEntity.ok(listaPorta);
   }
+
+  @GetMapping("/portasTeste/{msan}")
+  public ResponseEntity<List<CircuitDto>> getPortaTeste(@PathVariable("msan") String msan) {
+    List<CircuitDto> portasTeste = massivaService.getPortasTeste(msan);
+    return ResponseEntity.ok(portasTeste);
+  }
 }

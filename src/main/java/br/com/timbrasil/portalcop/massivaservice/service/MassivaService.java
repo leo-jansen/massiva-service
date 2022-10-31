@@ -10,49 +10,12 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.com.timbrasil.portalcop.massivaservice.dto.AgregadorDto;
-import br.com.timbrasil.portalcop.massivaservice.dto.AnelDto;
-import br.com.timbrasil.portalcop.massivaservice.dto.BrasDto;
-import br.com.timbrasil.portalcop.massivaservice.dto.DistribuidorDto;
-import br.com.timbrasil.portalcop.massivaservice.dto.MassivaDetalhadaDto;
-import br.com.timbrasil.portalcop.massivaservice.dto.MassivaDto;
-import br.com.timbrasil.portalcop.massivaservice.dto.MsanDto;
-import br.com.timbrasil.portalcop.massivaservice.dto.NovoRegistroNocDto;
-import br.com.timbrasil.portalcop.massivaservice.dto.PortaDto;
-import br.com.timbrasil.portalcop.massivaservice.dto.RelatorioMassivaDto;
-import br.com.timbrasil.portalcop.massivaservice.dto.TipoDto;
-import br.com.timbrasil.portalcop.massivaservice.dto.TopologiaDto;
-import br.com.timbrasil.portalcop.massivaservice.dto.UfDto;
-import br.com.timbrasil.portalcop.massivaservice.form.FinalizarMassivaForm;
-import br.com.timbrasil.portalcop.massivaservice.form.Nttform;
-import br.com.timbrasil.portalcop.massivaservice.form.RejeitarMassivaForm;
-import br.com.timbrasil.portalcop.massivaservice.model.Atividade;
-import br.com.timbrasil.portalcop.massivaservice.model.Massiva;
-import br.com.timbrasil.portalcop.massivaservice.model.MassivaEquipamento;
-import br.com.timbrasil.portalcop.massivaservice.model.MassivaEquipeResp;
-import br.com.timbrasil.portalcop.massivaservice.model.MassivaMsan;
-import br.com.timbrasil.portalcop.massivaservice.model.MassivaPrioridade;
-import br.com.timbrasil.portalcop.massivaservice.model.MassivaSlot;
-import br.com.timbrasil.portalcop.massivaservice.model.MassivaSubTpAbertura;
-import br.com.timbrasil.portalcop.massivaservice.model.OttMassiva;
-import br.com.timbrasil.portalcop.massivaservice.repositories.AtividadeRepository;
-import br.com.timbrasil.portalcop.massivaservice.repositories.AtividadeTipoRepository;
-import br.com.timbrasil.portalcop.massivaservice.repositories.MassivaEquipamentoRepository;
-import br.com.timbrasil.portalcop.massivaservice.repositories.MassivaEquipeRespRepository;
-import br.com.timbrasil.portalcop.massivaservice.repositories.MassivaMsanRepository;
-import br.com.timbrasil.portalcop.massivaservice.repositories.MassivaPrioridadeRepository;
-import br.com.timbrasil.portalcop.massivaservice.repositories.MassivaRepository;
-import br.com.timbrasil.portalcop.massivaservice.repositories.MassivaServiceIdRepository;
-import br.com.timbrasil.portalcop.massivaservice.repositories.MassivaSlotRepository;
-import br.com.timbrasil.portalcop.massivaservice.repositories.MassivaSubTpAberturaRepository;
-import br.com.timbrasil.portalcop.massivaservice.repositories.MassivaTpTopologiaRepository;
-import br.com.timbrasil.portalcop.massivaservice.repositories.ModuloEstadoRepository;
-import br.com.timbrasil.portalcop.massivaservice.repositories.OttMassivaRepository;
-import br.com.timbrasil.portalcop.massivaservice.repositories.UfRepository;
-import br.com.timbrasil.portalcop.massivaservice.repositories.sql.AtividadeSql;
-import br.com.timbrasil.portalcop.massivaservice.repositories.sql.MassivaSql;
-import br.com.timbrasil.portalcop.massivaservice.repositories.sql.PortaSql;
-import br.com.timbrasil.portalcop.massivaservice.repositories.sql.TopologiaSql;
+import br.com.timbrasil.fiber.cop.consultamsan.*;
+import br.com.timbrasil.portalcop.massivaservice.dto.*;
+import br.com.timbrasil.portalcop.massivaservice.form.*;
+import br.com.timbrasil.portalcop.massivaservice.model.*;
+import br.com.timbrasil.portalcop.massivaservice.repositories.*;
+import br.com.timbrasil.portalcop.massivaservice.repositories.sql.*;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -102,6 +65,9 @@ public class MassivaService {
 
   @Autowired
   UsuarioService usuarioService;
+
+  @Autowired
+  ConsultaMSANService consultaMSANService;
 
   @Autowired
   EntityManager entityManager;
@@ -188,7 +154,7 @@ public class MassivaService {
     log.info("cadastrando Massiva " + areaUsuario + " | " + nttForm.toString());
     boolean nttExist = nttExist(nttForm.getNtt());
     if (nttExist) {
-      throw new Exception("Ntt já existe");
+      throw new Exception("Ntt j� existe");
     }
     Long idAtividade = newAtividade(matricula, "MS_OPN_ATV", 3L, nttForm.getTipoAtividade());
     Optional<Long> idMassivaTopologia = massivaTpTopologiaRepository.getIdMassivaTopologia(nttForm.getTipoTopologia());
@@ -211,7 +177,7 @@ public class MassivaService {
       setMsanMassiva(nttForm, massiva.getId());
     }
     setQtdImpactoMassiva(areaUsuario, massiva.getId());
-    String msg = String.format("Massiva criada pelo usuário %s.", matricula);
+    String msg = String.format("Massiva criada pelo usu�rio %s.", matricula);
     setRegistroHistoricoAtividade(idAtividade, matricula, areaUsuario, msg, 108L);
   }
 
@@ -285,7 +251,8 @@ public class MassivaService {
             .setParameter("listAgregador", nttForm.getEquipamento())
             .getSingleResult();
         massivaMsanRepository
-            .save(new MassivaMsan(idMassiva, topologiaDto.getAnel(), topologiaDto.getMsan(), topologiaDto.getGabinete()));
+            .save(
+                new MassivaMsan(idMassiva, topologiaDto.getAnel(), topologiaDto.getMsan(), topologiaDto.getGabinete()));
         break;
       case "DISTRIBUIDOR":
         topologiaDto = (TopologiaDto) entityManager
@@ -293,7 +260,8 @@ public class MassivaService {
             .setParameter("listDistribuidor", nttForm.getEquipamento())
             .getSingleResult();
         massivaMsanRepository
-            .save(new MassivaMsan(idMassiva, topologiaDto.getAnel(), topologiaDto.getMsan(), topologiaDto.getGabinete()));
+            .save(
+                new MassivaMsan(idMassiva, topologiaDto.getAnel(), topologiaDto.getMsan(), topologiaDto.getGabinete()));
         break;
       case "BRAS":
         topologiaDto = (TopologiaDto) entityManager
@@ -301,7 +269,8 @@ public class MassivaService {
             .setParameter("listBras", nttForm.getEquipamento())
             .getSingleResult();
         massivaMsanRepository
-            .save(new MassivaMsan(idMassiva, topologiaDto.getAnel(), topologiaDto.getMsan(), topologiaDto.getGabinete()));
+            .save(
+                new MassivaMsan(idMassiva, topologiaDto.getAnel(), topologiaDto.getMsan(), topologiaDto.getGabinete()));
         break;
       default:
         break;
@@ -380,7 +349,7 @@ public class MassivaService {
     log.info("buscando dados da massiva de id: " + id);
     Optional<MassivaDetalhadaDto> massivaDto = massivaRepository.getMassivaById(id);
     if (massivaDto.isEmpty()) {
-      throw new Exception("Massiva não encontrada");
+      throw new Exception("Massiva n�o encontrada");
     }
     if (!("AAA".equals(massivaDto.get().getTipoTopologia()) || "VoIP".equals(massivaDto.get().getTipoTopologia()))) {
       log.info("Buscando lista de equipamento e lista de msan");
@@ -408,7 +377,7 @@ public class MassivaService {
     log.info("Atualizando subtipo da massiva de id: " + idMassiva + " para o subtipo: " + idSubtipo);
     Optional<Massiva> massiva = massivaRepository.findById(idMassiva);
     if (massiva.isEmpty()) {
-      throw new Exception("Id da massiva não existe");
+      throw new Exception("Id da massiva n�o existe");
     }
     massiva.get().setFkSubTipoAbertura(idSubtipo);
   }
@@ -417,7 +386,7 @@ public class MassivaService {
   public void closeMassiva(String matricula, FinalizarMassivaForm finalizarMassivaForm) throws Exception {
     Long idUsuario = usuarioService.getIdUsuario(matricula);
     atualizarAtividade(idUsuario, finalizarMassivaForm, "MS_CLS_ATV", 3L);
-    String msg = String.format("Massiva fechada pelo usuário %s.", matricula);
+    String msg = String.format("Massiva fechada pelo usu�rio %s.", matricula);
     setRegistroHistoricoAtividade(finalizarMassivaForm.getId(), matricula, "Massiva", msg, 110L);
   }
 
@@ -426,11 +395,11 @@ public class MassivaService {
       Long idModulo) throws Exception {
     Optional<Long> idStatus = moduloEstadoRepository.getIdByRefStatusAndFkModulo(refStatus, idModulo);
     if (idStatus.isEmpty()) {
-      throw new Exception("Id da status não encontrado");
+      throw new Exception("Id da status n�o encontrado");
     }
     Optional<Atividade> atividade = atividadeRepository.findById(finalizarMassivaForm.getId());
     if (atividade.isEmpty()) {
-      throw new Exception("atividade não encontrado");
+      throw new Exception("atividade n�o encontrado");
     }
     atividade.get().setDtUltModificacao(LocalDateTime.now());
     atividade.get().setFkUsrAbertura(idUsuario);
@@ -451,11 +420,11 @@ public class MassivaService {
   private Long atualizarAtividade(Long idUsuario, Long idAtividade, String refStatus, Long idModulo) throws Exception {
     Optional<Long> idStatus = moduloEstadoRepository.getIdByRefStatusAndFkModulo(refStatus, idModulo);
     if (idStatus.isEmpty()) {
-      throw new Exception("Id da status não encontrado");
+      throw new Exception("Id da status n�o encontrado");
     }
     Optional<Atividade> atividade = atividadeRepository.findById(idAtividade);
     if (atividade.isEmpty()) {
-      throw new Exception("atividade não encontrado");
+      throw new Exception("atividade n�o encontrado");
     }
     atividade.get().setDtUltModificacao(LocalDateTime.now());
     atividade.get().setFkUsrAbertura(idUsuario);
@@ -468,13 +437,13 @@ public class MassivaService {
     log.info("Rejeitando massiva de id: " + id + " com o motivo: " + motivo + " | Usuario: " + matricula);
     Optional<Massiva> massiva = massivaRepository.findById(id);
     if (massiva.isEmpty()) {
-      throw new Exception("Id da massiva não encontrado");
+      throw new Exception("Id da massiva n�o encontrado");
     }
     Long idUsuario = usuarioService.getIdUsuario(matricula);
     massiva.get().setMotivoRejeicao(motivo);
     Long idAtividade = atualizarAtividade(idUsuario, massiva.get().getFkAtividade(), "MS_RJC_ATV", 3L);
     setRegistroHistoricoAtividade(idAtividade, matricula, "Rejeitar Massiva",
-        String.format("Suspeita rejeitada pelo usuário %s", matricula), 107L);
+        String.format("Suspeita rejeitada pelo usu�rio %s", matricula), 107L);
   }
 
   @Transactional
@@ -483,7 +452,7 @@ public class MassivaService {
     Long idUsuario = usuarioService.getIdUsuario(matricula);
     Optional<Massiva> massiva = massivaRepository.findById(rejeitarMassivaForm.getId());
     if (massiva.isEmpty()) {
-      throw new Exception("Id da massiva não encontrado");
+      throw new Exception("Id da massiva n�o encontrado");
     }
     atualizarAtividade(idUsuario, massiva.get().getFkAtividade(), rejeitarMassivaForm.getTipoAbertura(), 3L);
     massiva.get().setFkSubTipoAbertura(rejeitarMassivaForm.getFkSubTipoAbertura());
@@ -498,7 +467,7 @@ public class MassivaService {
     massiva.get().setLocalidade(rejeitarMassivaForm.getLocalidade());
     massiva.get().setQtdIndisponiveis(rejeitarMassivaForm.getClientesIndisponiveis());
     setRegistroHistoricoAtividade(idUsuario, matricula, rejeitarMassivaForm.getTipoAbertura(),
-        String.format("Suspeita aceita pelo usuário %s.", matricula), 106L);
+        String.format("Suspeita aceita pelo usu�rio %s.", matricula), 106L);
   }
 
   public List<OttMassiva> getOttsCampo() {
@@ -511,5 +480,31 @@ public class MassivaService {
     log.info("Buscando massivas encerradas nas ultimas 24hr");
     List<MassivaDto> massivaEncerradas = massivaRepository.getMassivaEncerradas();
     return massivaEncerradas;
+  }
+
+  public List<CircuitDto> getPortasTeste(String msan) {
+    MSAN msanRequest = new MSAN();
+    msanRequest.setNodename(msan);
+    ConsultaMSANRequest request = new ConsultaMSANRequest();
+    request.getMsan().add(msanRequest);
+    ConsultaMSAN service = ConsultaMSANService.getMSANService();
+    try {
+      ConsultaMSANResponse response = service.consultaMSAN(request);
+      if (response == null || response.getMsan() == null || response.getMsan().isEmpty()) {
+        log.error("Nenhuma Msan encontrada: msan = " + msan);
+        return List.of();
+      } else if (response.getMsan().size() != 1) {
+        log.error("Mais de uma MSAN encontrada: msan = " + msan);
+        response.getMsan().forEach(m -> log.trace("msan: " + m));
+        return List.of();
+      }
+      List<CircuitDto> list = response.getMsan().get(0).getPortasDeTeste().stream().map(p -> {
+        return new CircuitDto(response.getMsan().get(0).getNodename(), p.getSlot(), p.getPorta(), p.isHabilitada());
+      }).toList();
+      return list;
+    } catch (ConsultaMSANFault_Exception e) {
+      log.error(String.format("Error no WEBSERVICE de MSAN: %s", e.getMessage()));
+      return List.of();
+    }
   }
 }
