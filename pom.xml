@@ -68,6 +68,22 @@
 		</dependency>
 		<!-- lib removida no java 11 -->
 		<dependency>
+			<groupId>com.sun.xml.ws</groupId>
+			<artifactId>jaxws-ri</artifactId>
+			<version>2.3.2</version>
+			<type>pom</type>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.xml.ws</groupId>
+			<artifactId>rt</artifactId>
+			<version>2.3.2</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.org.apache.xml.internal</groupId>
+			<artifactId>resolver</artifactId>
+			<version>20050927</version>
+		</dependency>
+		<dependency>
 			<groupId>org.jvnet.jaxb2_commons</groupId>
 			<artifactId>jaxb2-basics-runtime</artifactId>
 			<version>1.11.1</version>

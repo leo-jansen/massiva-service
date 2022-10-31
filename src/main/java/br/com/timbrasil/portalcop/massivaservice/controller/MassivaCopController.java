@@ -2,6 +2,8 @@ package br.com.timbrasil.portalcop.massivaservice.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
@@ -58,6 +60,16 @@ public class MassivaCopController {
     try {
       massivaService.newNtt(ntt, "F8057991", "COP");
       return ResponseEntity.status(HttpStatus.CREATED).build();
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
+    }
+  }
+
+  @PostMapping("/finalizar")
+  public ResponseEntity<?> closeMassiva(@RequestBody @Valid FinalizarMassivaForm finalizarMassivaForm) {
+    try {
+      massivaService.closeMassiva("F8057991", finalizarMassivaForm);
+      return ResponseEntity.ok().build();
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
     }
