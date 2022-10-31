@@ -17,7 +17,7 @@ import lombok.Setter;
 public class Nttform {
   @NotBlank @NotEmpty @NotNull
   private String ntt;
-  @NotBlank @NotEmpty @NotNull
+  @NotBlank @NotEmpty
   private Long equipeResponsavel;
   @NotBlank @NotEmpty @NotNull
   private String tipoAtividade;

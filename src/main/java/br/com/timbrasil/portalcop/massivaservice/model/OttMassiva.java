@@ -26,6 +26,6 @@ public class OttMassiva {
   public String statusToa;
   @Column(name = "UF")
   public String uf;
-  @Column(name = "ID_MASSIVA")
-  public String idMassiva;
+  @Column(name = "NTT")
+  public String ntt;
 }
