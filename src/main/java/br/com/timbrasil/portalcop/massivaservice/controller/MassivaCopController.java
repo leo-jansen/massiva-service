@@ -68,8 +68,11 @@ public class MassivaCopController {
   @PostMapping("/finalizar")
   public ResponseEntity<?> closeMassiva(@RequestBody @Valid FinalizarMassivaForm finalizarMassivaForm) {
     try {
-      massivaService.closeMassiva("F8057991", finalizarMassivaForm);
-      return ResponseEntity.ok().build();
+      boolean closeMassiva = massivaService.closeMassiva("F8057991", finalizarMassivaForm);
+      if(closeMassiva){
+        return ResponseEntity.ok().build();
+      }
+      return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
     }

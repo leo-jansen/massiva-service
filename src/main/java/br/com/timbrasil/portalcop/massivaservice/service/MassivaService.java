@@ -16,6 +16,7 @@ import br.com.timbrasil.portalcop.massivaservice.form.*;
 import br.com.timbrasil.portalcop.massivaservice.model.*;
 import br.com.timbrasil.portalcop.massivaservice.repositories.*;
 import br.com.timbrasil.portalcop.massivaservice.repositories.sql.*;
+import br.com.timbrasil.portalcop.massivaservice.util.NotificacaoMassiva;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -383,11 +384,24 @@ public class MassivaService {
   }
 
   @Transactional
-  public void closeMassiva(String matricula, FinalizarMassivaForm finalizarMassivaForm) throws Exception {
-    Long idUsuario = usuarioService.getIdUsuario(matricula);
-    atualizarAtividade(idUsuario, finalizarMassivaForm, "MS_CLS_ATV", 3L);
-    String msg = String.format("Massiva fechada pelo usu�rio %s.", matricula);
-    setRegistroHistoricoAtividade(finalizarMassivaForm.getId(), matricula, "Massiva", msg, 110L);
+  public boolean closeMassiva(String matricula, FinalizarMassivaForm finalizarMassivaForm) throws Exception {
+    Optional<Massiva> massiva = massivaRepository.findById(finalizarMassivaForm.getId());
+    if(massiva.isPresent()){
+      Long idUsuario = usuarioService.getIdUsuario(matricula);
+      atualizarAtividade(idUsuario, finalizarMassivaForm, "MS_CLS_ATV", 3L);
+      massiva.get().setFkEquipeRespFechamento(finalizarMassivaForm.getFkEquipeRespnsavel());
+      massiva.get().setCausaRaiz(finalizarMassivaForm.getCausaRaiz());
+      massiva.get().setNotaFechamento(finalizarMassivaForm.getNotaFechamento());
+      massiva.get().setDtNormalizacao(finalizarMassivaForm.getDataNormalizar());
+      massiva.get().setFlagNttCancelado(finalizarMassivaForm.isNttFechado() ? 1L : 0L);
+      String msg = String.format("Massiva fechada pelo usu�rio %s.", matricula);
+      setRegistroHistoricoAtividade(finalizarMassivaForm.getId(), matricula, "Massiva", msg, 110L);
+      if(finalizarMassivaForm.isNttFechado()){
+        NotificacaoMassiva.enviar(finalizarMassivaForm.getId(), "FECHAMENTO");
+      }
+      return true;
+    }
+    return false;
   }
 
   @Transactional
